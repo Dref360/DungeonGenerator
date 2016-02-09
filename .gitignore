@@ -1,3 +1,7 @@
+# Directories
+bin/
+obj/
+
 # Compiled Object files
 *.slo
 *.lo
@@ -13,9 +17,6 @@
 *.dylib
 *.dll
 
-# Fortran module files
-*.mod
-
 # Compiled Static libraries
 *.lai
 *.la
@@ -26,3 +27,9 @@
 *.exe
 *.out
 *.app
+
+# Vim temporary files
+*~
+*.swp
+*.swo
+
