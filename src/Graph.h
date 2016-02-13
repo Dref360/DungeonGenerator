@@ -1,23 +1,20 @@
 #pragma once
 #include <vector>
 
-/*
- * Description :
- * This Graph is a container to apply the steering behavior algorithm.
+/**
+ * @file Graph.h
+ * @date feb. 2016
+ * @brief Simple graph to apply the steering behavior algorithm.
  *
- * Use case :
  * Nodes are dumped into it, treated then ready to be extracted.
- *
  */
 template<class T>
 class Graph
 {
 public:
 	typedef struct {
-		typedef struct {int x,y;} distance;
-		typedef struct {T content; distance vector;} neighbor;
 		T content;
-		std::vector<neighbor> neighbors;
+		std::vector<T> neighbors;
 		// TODO Parametric constructor with move semantic
 	} Node;
 

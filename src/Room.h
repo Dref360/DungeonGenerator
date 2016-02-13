@@ -1,5 +1,7 @@
 #pragma once
-#include <algorithm>
+
+#include <vector>
+
 class Point {
 
   public:
@@ -29,9 +31,9 @@ public:
     int width;
     int height;
     Point position;
+	// TODO Room or Graph job ?
     Point GetSteeringNewPosition(std::vector<Room>& neibors);
     Point middle();
-    
 
 };
 

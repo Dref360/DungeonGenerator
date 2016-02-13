@@ -1,5 +1,7 @@
 #include "Room.h"
 
+#include <algorithm>
+
 Room::Room()
 : position {Point()},width {0},height{0}
 {}

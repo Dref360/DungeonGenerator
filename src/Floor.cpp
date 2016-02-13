@@ -1,6 +1,12 @@
 #include "Floor.h"
+#include "Room.h"
 
 Floor::Floor()
+{
+}
+
+Floor::Floor(std::vector<Room> rooms)
+	:rooms{rooms}
 {
 }
 
@@ -11,7 +17,7 @@ Floor::~Floor()
 std::vector<std::vector<bool>> Floor::toArray()
 {
    std::vector<std::vector<bool>> arr(abs(MinX()) + MaxX(),std::vector<bool>(abs(MinY()) + MaxY(),0));
-   for(Room room :   rooms)
+   for(Room room : rooms)
    {
        for(int i = 0; i < room.width; i++){
            for(int j = 0; j < room.height; j++){
