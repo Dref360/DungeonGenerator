@@ -16,16 +16,18 @@ public:
 		T content;
 		std::vector<T> neighbors;
 		// TODO Parametric constructor with move semantic
+        
 	} Node;
 
 	//Graph() = delete;	// Propably will be constructed from provided nodes 
 						// (e.g. stream, pre-allocated)
 
 	Graph(/* TODO Some feeding input */);
-
+    void findNeibourgh();
 	void steer();		// Apply the steering behavior(ish) algorithm
 
 private:
+    int THREASHOLD = 50;
 	std::vector<Node> nodes;
 
 };
