@@ -50,6 +50,11 @@ int main(int argc, char **argv)
 			cout << col;
 		cout << endl;
 	}
+    
+    //TEST ROOM GENERATION
+    cout << endl <<"Room generation tests" << endl;
+    for(int i = 0; i < 30; i++)
+        cout << Graph<Room>::NormalizedRandom() << endl;
 
     return 0;
 }

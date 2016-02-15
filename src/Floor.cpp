@@ -1,5 +1,6 @@
 #include "Floor.h"
 #include "Room.h"
+#include <numeric>
 
 Floor::Floor()
 {

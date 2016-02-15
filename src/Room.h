@@ -26,13 +26,14 @@ class Point {
 class Room
 {
 public:
+    Room(int w, int h, Point p);
     Room();
     ~Room();
     int width;
     int height;
     Point position;
 	// TODO Room or Graph job ?
-    Point GetSteeringNewPosition(std::vector<Room>& neibors);
+    Point GetSteeringNewPosition(std::vector<Room>& neighbors);
     Point middle();
 
 };
