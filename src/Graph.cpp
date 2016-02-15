@@ -12,9 +12,28 @@ Graph<T>::Graph(int nbCells, int minSize, int maxSize, int posRadius)
 template<>
 void Graph<Room>::steer()
 {
+    auto graphCopy = *this;
+    
+    //While graph changes, steer on every node
 	for(Node node : nodes)
 		node.content.position;
 	
+}
+
+//This will find every neibourghs around every node. O(n²)
+template<>
+void Graph<Room>::findNeibourgh()
+{
+    for(auto node1 : nodes)
+    {
+        for(auto node2 : nodes)
+        {
+            if(&node2 == &node1)
+                continue;
+            if(node1.content.distance(node2.content) < THREASHOLD)
+                node1.neighbors.push_back(node2.content);
+        }
+    }
 }
 
 // Explicit declaration of template use

@@ -20,6 +20,14 @@ class Point {
         Point res;
         res.x = x + other.x;
         res.y = y + other.y;
+        return res;
+    }
+    Point operator-(const Point& other) const
+    {
+        Point res;
+        res.x = x - other.x;
+        res.y = y - other.y;
+        return res;
     }
 };
 
@@ -29,12 +37,17 @@ public:
     Room(int w, int h, Point p);
     Room();
     ~Room();
+    Room(Point position,int width, int height)
+    : position {position}, width {width}, height{height}
+    {}
     int width;
     int height;
     Point position;
 	// TODO Room or Graph job ?
-    Point GetSteeringNewPosition(std::vector<Room>& neighbors);
-    Point middle();
+    Point GetSteeringNewPosition(std::vector<Room>& neibors);
+    Point middle() const;
+    bool intersect(const Room&) const;
+    float distance(const Room&) const;
 
 };
 

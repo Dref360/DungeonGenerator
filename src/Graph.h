@@ -24,12 +24,13 @@ public:
 
 	//Graph() = delete;	// Propably will be constructed from provided nodes 
 						// (e.g. stream, pre-allocated)
-                        
+
     Graph(int nbCells, int minSize, int maxSize, int posRadius);
 
 	void steer();		// Apply the steering behavior(ish) algorithm
     double NormalizedRandom();
 private:
+    int THREASHOLD = 50;
 	std::vector<Node> nodes;
 
     void GenerateRooms(int nbCells, int minSize, int maxSize, int posRadius);
