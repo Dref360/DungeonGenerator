@@ -13,10 +13,14 @@ Room::~Room()
 
 Point Room::GetSteeringNewPosition(std::vector<Room>& neibors)
 {
-    return std::accumulate(begin(neibors),end(neibors), middle(), [&](const Point& acc,Room& x)
+    Point vectorino;
+    vectorino.x = 0;
+    vectorino.y = 0;
+    auto vectorSteering = std::accumulate(begin(neibors),end(neibors), vectorino, [&](const Point& acc,Room& x)
     {
-      return intersect(x) ? acc + (middle() - x.middle()) : acc;  
+      return intersect(x) ? acc + (x.middle() - middle()) : acc;
     } );
+    return middle() + vectorSteering * -1;
 }
 
 bool Room::intersect(const Room& room) const
@@ -25,9 +29,9 @@ bool Room::intersect(const Room& room) const
 	|| (room.position.x + room.width <= position.x) // trop à gauche
 	|| (room.position.y >= position.y + height) // trop en bas
 	|| (room.position.y + room.height <= position.y))  // trop en haut
-          return false; 
+          return false;
    else
-          return true; 
+          return true;
 }
 
 Point Room::middle() const
@@ -44,4 +48,3 @@ float Room::distance(const Room& room) const
     auto midRoom = room.middle();
     return sqrt(std::pow(midThis.x + midRoom.x,2)+std::pow(midThis.y + midRoom.y,2) );
 }
-

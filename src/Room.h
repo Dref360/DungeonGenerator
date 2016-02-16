@@ -10,11 +10,11 @@ class Point {
     Point(int x,int y)
     :x{x},y{y}
     {}
-    
+
     Point()
     :x{0},y{0}
     {}
-    
+
     Point operator+(const Point& other) const
     {
         Point res;
@@ -27,6 +27,13 @@ class Point {
         Point res;
         res.x = x - other.x;
         res.y = y - other.y;
+        return res;
+    }
+    Point operator*(const int factor) const
+    {
+        Point res;
+        res.x  = x * factor;
+        res.y = y * factor;
         return res;
     }
 };
@@ -49,4 +56,3 @@ public:
     float distance(const Room&) const;
 
 };
-
