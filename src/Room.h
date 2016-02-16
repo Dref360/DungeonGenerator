@@ -4,17 +4,17 @@
 
 class Point {
 
-  public:
+public:
     int x;
     int y;
-    Point(int x,int y)
-    :x{x},y{y}
+    Point(int x, int y)
+        :x{ x }, y{ y }
     {}
-    
+
     Point()
-    :x{0},y{0}
+        :x{ 0 }, y{ 0 }
     {}
-    
+
     Point operator+(const Point& other) const
     {
         Point res;
@@ -34,16 +34,16 @@ class Point {
 class Room
 {
 public:
-    Room(int w, int h, Point p);
+    Room(int w, int h, int x, int y);
     Room();
     ~Room();
-    Room(Point position,int width, int height)
-    : position {position}, width {width}, height{height}
+    Room(Point position, int width, int height)
+        : position{ position }, width{ width }, height{ height }
     {}
     int width;
     int height;
     Point position;
-	// TODO Room or Graph job ?
+    // TODO Room or Graph job ?
     Point GetSteeringNewPosition(std::vector<Room>& neibors);
     Point middle() const;
     bool intersect(const Room&) const;

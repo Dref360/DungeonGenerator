@@ -7,7 +7,7 @@ Floor::Floor()
 }
 
 Floor::Floor(std::vector<Room> rooms)
-	:rooms{rooms}
+	:rooms{ rooms }
 {
 }
 
