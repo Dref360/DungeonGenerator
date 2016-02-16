@@ -1,10 +1,13 @@
 #include "Graph.h"
 #include "Room.h"
+#include <math.h>
+#include <algorithm>
+#include <random>
 
-template <class T>
-Graph<T>::Graph(/* Input */)
+template<>
+Graph<Room>::Graph(int nbCells, int minSize, int maxSize, int posRadius)
 {
-	
+    Graph::GenerateRooms(nbCells, minSize, maxSize, posRadius);
 }
 
 // Add a trait (e.g. Position) to Room to treat general cases
@@ -21,7 +24,7 @@ void Graph<Room>::steer()
 
 //This will find every neibourghs around every node. O(n²)
 template<>
-void Graph<Room>::findNeibourgh()
+void Graph<Room>::findNeighbour()
 {
     for(auto node1 : nodes)
     {
@@ -33,6 +36,35 @@ void Graph<Room>::findNeibourgh()
                 node1.neighbors.push_back(node2.content);
         }
     }
+}
+
+template<>
+void Graph<Room>::GenerateRooms(int nbCells, int minSize, int maxSize, int posRadius)
+{
+    for(int i = 0; i < nbCells; i++)
+    {
+        int width = std::max((int)round(NormalizedRandom() * maxSize), minSize);
+        int height = std::max((int)round(NormalizedRandom() * maxSize), minSize);
+        
+        double t = NormalizedRandom() * 2 * 3.14159265358979323846;
+        double r = posRadius * sqrt(NormalizedRandom());
+        
+        int x = round(r * cos(t));
+        int y = round(r * sin(t));
+        
+        nodes.push_back(Node{Room{width, height, x, y}});
+    }
+}
+
+template<>
+double Graph<Room>::NormalizedRandom()
+{
+    std::normal_distribution<double> distribution(0.5, 0.5);
+    double x = distribution(generator);
+    while (x > 1 || x < 0)
+        x = distribution(generator);
+
+    return x;
 }
 
 // Explicit declaration of template use

@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <random>
 
 /**
  * @file Graph.h
@@ -12,23 +13,30 @@ template<class T>
 class Graph
 {
 public:
-	typedef struct {
-		T content;
-		std::vector<T> neighbors;
-		// TODO Parametric constructor with move semantic
-        
-	} Node;
+    typedef struct Node {
+        T content;
+        std::vector<T> neighbors;
+        // TODO Parametric constructor with move semantic
+        Node()
+        {}
+        Node(T val)
+        {
+            content = val;
+        }
+    } Node;
 
-	//Graph() = delete;	// Propably will be constructed from provided nodes 
-						// (e.g. stream, pre-allocated)
-
-	Graph(/* TODO Some feeding input */);
-    void findNeibourgh();
-	void steer();		// Apply the steering behavior(ish) algorithm
-
+    //Graph() = delete;	// Propably will be constructed from provided nodes 
+    // (e.g. stream, pre-allocated)
+    Graph(int nbCells, int minSize, int maxSize, int posRadius);
+    
+    void findNeighbour();
+    void steer();		// Apply the steering behavior(ish) algorithm
+    double NormalizedRandom();
 private:
     int THREASHOLD = 50;
-	std::vector<Node> nodes;
+    std::vector<Node> nodes;
+    std::default_random_engine generator;
 
+	void GenerateRooms(int nbCells, int minSize, int maxSize, int posRadius);
 };
 

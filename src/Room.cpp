@@ -6,6 +6,10 @@ Room::Room()
 : position {Point()},width {0},height{0}
 {}
 
+Room::Room(int w, int h, int x, int y)
+: position {Point(x, y)}, width{w}, height{h}
+{}
+
 
 Room::~Room()
 {

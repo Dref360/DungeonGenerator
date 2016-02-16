@@ -1,12 +1,13 @@
 #include "Floor.h"
 #include "Room.h"
+#include <numeric>
 
 Floor::Floor()
 {
 }
 
 Floor::Floor(std::vector<Room> rooms)
-	:rooms{rooms}
+	:rooms{ rooms }
 {
 }
 
