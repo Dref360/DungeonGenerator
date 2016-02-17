@@ -38,8 +38,8 @@ void Graph<Room>::findNeighbour()
     }
 }
 
-template<>
-void Graph<Room>::GenerateRooms(int nbCells, int minSize, int maxSize, int posRadius)
+template<class T>
+void Graph<T>::GenerateRooms(int nbCells, int minSize, int maxSize, int posRadius)
 {
     for(int i = 0; i < nbCells; i++)
     {
@@ -56,8 +56,8 @@ void Graph<Room>::GenerateRooms(int nbCells, int minSize, int maxSize, int posRa
     }
 }
 
-template<>
-double Graph<Room>::NormalizedRandom()
+template<class T>
+double Graph<T>::NormalizedRandom()
 {
     std::normal_distribution<double> distribution(0.5, 0.5);
     double x = distribution(generator);

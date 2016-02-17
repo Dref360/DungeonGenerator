@@ -10,7 +10,7 @@ class Point {
     Point(int x, int y)
         :x{ x }, y{ y }
     {}
-
+    
     Point()
         :x{ 0 }, y{ 0 }
     {}
@@ -46,6 +46,7 @@ public:
     Room(Point position,int width, int height)
     : position {position}, width {width}, height{height}
     {}
+    Room(int width,int height,int x , int y);
     int width;
     int height;
     Point position;
