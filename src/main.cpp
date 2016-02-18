@@ -13,9 +13,6 @@ int main(int argc, char **argv)
     cout << "Graph tests" << endl;
 
     Graph<Room> graph(150, 10, 100, 50);
-    Graph<Room>::Node node;
-    node.content.width = 3;
-
 
     cout << "Room tests" << endl;
 

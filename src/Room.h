@@ -41,6 +41,14 @@ class Point {
     {
         return x != other.x || y != other.y;
     }
+
+	bool operator==(const Point& other)
+	{ 
+		return x == other.x
+			&& y == other.y;
+	}
+	bool operator!=(const Point& other)
+	{ return !(*this == other); }
 };
 
 class Room
@@ -60,5 +68,15 @@ public:
     Point middle() const;
     bool intersect(const Room&) const;
     float distance(const Room&) const;
+
+
+	bool operator==(const Room& other)
+	{ 
+		return position == other.position 
+			&& height   == other.height
+			&& width    == other.width;
+	}
+	bool operator!=(const Room& other)
+	{ return !(*this == other); }
 
 };

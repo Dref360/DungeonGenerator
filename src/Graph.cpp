@@ -2,7 +2,14 @@
 #include "Room.h"
 #include <math.h>
 #include <algorithm>
+#include <iterator>
+#include <functional>
 #include <random>
+
+template<class T>
+Graph<T>::Graph()
+{
+}
 
 template<>
 Graph<Room>::Graph(int nbCells, int minSize, int maxSize, int posRadius)
@@ -23,19 +30,39 @@ void Graph<Room>::steer()
 }
 
 //This will find every neibourghs around every node. O(n²)
-template<>
-void Graph<Room>::findNeighbour()
+//template<>
+//void Graph<Room>::findNeighbour()
+//{
+//    for(auto node1 : nodes)
+//    {
+//        for(auto node2 : nodes)
+//        {
+//            if(&node2 == &node1)
+//                continue;
+//            if(node1.content.distance(node2.content) < THREASHOLD)
+//                node1.neighbors.push_back(node2.content);
+//        }
+//    }
+//}
+
+template<class T>
+Graph<T> Graph<T>::mst()
 {
-    for(auto node1 : nodes)
-    {
-        for(auto node2 : nodes)
-        {
-            if(&node2 == &node1)
-                continue;
-            if(node1.content.distance(node2.content) < THREASHOLD)
-                node1.neighbors.push_back(node2.content);
-        }
-    }
+	Graph<T> mst{}; // Initialize new Graph with same number of nodes
+
+	std::function<void (Node,Graph<T>)> DSF = [&](Node node, Graph<T> mst)
+	{
+		for(auto next : node.neighbors)
+			if(std::find(std::begin(mst.nodes), std::end(mst.nodes), next) != std::end(mst.nodes)) 
+			{
+				mst.nodes.emplace_back(next); // TODO add parent to neighbor
+				DSF(next, mst);
+			}
+	};
+
+	DSF(mst.nodes[0], mst);
+	
+	return mst;
 }
 
 template<class T>
