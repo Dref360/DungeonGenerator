@@ -1,6 +1,7 @@
 #include "Floor.h"
 #include "Room.h"
 #include <numeric>
+#include <iostream>
 
 Floor::Floor()
 {
@@ -14,6 +15,18 @@ Floor::Floor(std::vector<Room> rooms)
 Floor::~Floor()
 {
 }
+
+void Floor::toOutput(std::ostream& os)
+{
+    auto arr = toArray();
+    os << "toOutput" << std::endl;
+    for (auto row : arr) {
+    for (auto col : row)
+    os << col;
+    os << std::endl;
+    }
+}
+
 
 std::vector<std::vector<bool>> Floor::toArray()
 {

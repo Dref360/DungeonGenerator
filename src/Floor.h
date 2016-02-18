@@ -13,6 +13,7 @@ public:
     ~Floor();
     std::vector<Room> rooms;
     std::vector<std::vector<bool>> toArray();
+    void toOutput(std::ostream&);
 private:
     int MinX();
     int MaxX();

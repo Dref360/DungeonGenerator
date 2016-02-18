@@ -30,27 +30,37 @@ int main(int argc, char **argv)
     r2.width = 3;
     r2.position.x = 3;
     r2.position.y = 3;
+    
+    r3.height = 2;
+    r3.width = 2;
+    r3.position.x = 1;
+    r3.position.y = 2;
+    
 
-    vector<Room> rooms = { r1, r2 };
+    vector<Room> rooms = { r1, r2, r3 };
 
     /* FIXME clang causes "Illegal instruction" (with make) */
 
+    Floor f1(rooms);
+    f1.toOutput(cout);
+    
+    //Test, a room is now out
     Point p = r1.GetSteeringNewPosition(rooms);
     cout << "x: " << p.x << endl << "y: " << p.y << endl;
-
-
-    cout << "Floor tests" << endl;
-
-    Floor f1(rooms);
-
-    auto arr = f1.toArray();
-
-    cout << "toArray" << endl;
-    for (auto row : arr) {
-    for (auto col : row)
-    cout << col;
-    cout << endl;
+    char s;
+    while (p != r1.position)
+    {
+        r1.position = p;
+        rooms = {r1, r2, r3 };
+        f1.rooms = rooms;
+        f1.toOutput(cout);
+        rooms = {r2,r3};
+        p = r1.GetSteeringNewPosition(rooms);
+        cout << "x: " << p.x << endl << "y: " << p.y << endl;
+        cin >> s;
     }
+    
+
 
     //TEST ROOM GENERATION
     cout << endl << "Room generation tests" << endl;

@@ -36,6 +36,11 @@ class Point {
         res.y = y * factor;
         return res;
     }
+    
+    bool operator!=(const Point& other) const
+    {
+        return x != other.x || y != other.y;
+    }
 };
 
 class Room

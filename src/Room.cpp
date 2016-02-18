@@ -1,6 +1,7 @@
 #include "Room.h"
 
 #include <algorithm>
+#include <iostream>
 
 Room::Room()
 : position {Point()},width {0},height{0}
@@ -24,7 +25,8 @@ Point Room::GetSteeringNewPosition(std::vector<Room>& neibors)
     {
       return intersect(x) ? acc + (x.middle() - middle()) : acc;
     } );
-    return middle() + vectorSteering * -1;
+    std::cout << vectorSteering.x << ".." << vectorSteering.y << std::endl;
+    return position + vectorSteering * -1;
 }
 
 bool Room::intersect(const Room& room) const
