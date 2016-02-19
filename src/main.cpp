@@ -7,29 +7,31 @@
 #include <random>
 
 using namespace std;
+Floor GenerateFloor(int, int, int, int);
+double NormalizedRandom(default_random_engine&, normal_distribution<double>&);
 
 int main(int argc, char **argv)
 {
-    cout << "Graph tests" << endl;
+	cout << "Graph tests" << endl;
 
-    Graph<Room> graph(150, 10, 100, 50);
-    Graph<Room>::Node node;
-    node.content.width = 3;
+	Graph<Room> graph();
+	Graph<Room>::Node node;
+	node.content.width = 3;
 
 
-    cout << "Room tests" << endl;
+	cout << "Room tests" << endl;
 
-    Room r1, r2, r3;
+	Room r1, r2, r3;
 
-    r1.height = 2;
-    r1.width = 2;
+	r1.height = 2;
+	r1.width = 2;
     r1.position.x = -1;
     r1.position.y = -1;
 
-    r2.height = 3;
-    r2.width = 3;
-    r2.position.x = 3;
-    r2.position.y = 3;
+	r2.height = 3;
+	r2.width = 3;
+	r2.position.x = 3;
+	r2.position.y = 3;
     
     r3.height = 2;
     r3.width = 2;
@@ -39,63 +41,49 @@ int main(int argc, char **argv)
 
     vector<Room> rooms = { r1, r2, r3 };
 
-    /* FIXME clang causes "Illegal instruction" (with make) */
-
     Floor f1(rooms);
     f1.toOutput(cout);
     
     f1.spreadRoom();
     
     f1.toOutput(cout);
-    int h;
-    cin>> h;
-    //Test, a room is now out
-    Point p = r1.GetSteeringNewPosition(rooms);
-    cout << "x: " << p.x << endl << "y: " << p.y << endl;
-    char s;
-    while (p != r1.position)
-    {
-        r1.position = p;
-        rooms = {r1, r2, r3 };
-        f1.rooms = rooms;
-        f1.toOutput(cout);
-        rooms = {r2,r3};
-        p = r1.GetSteeringNewPosition(rooms);
-        cout << "x: " << p.x << endl << "y: " << p.y << endl;
-        cin >> s;
-    }
-    
 
+	cout << endl << endl << "Floor generation..." << endl;
+	Floor f2 = GenerateFloor(30, 5, 10, 20);
+	f2.toOutput(cout);
 
-    //TEST ROOM GENERATION
-    cout << endl << "Room generation tests" << endl;
+	int x;
+	cin >> x;
 
-    //cout << "Random number test" << endl;
-    //cout.precision(17);
+	return 0;
+}
 
-    //vector<double> tab;
-    //for (int i = 0; i < 30; i++)
-    //    tab.push_back(graph.NormalizedRandom());
-    //sort(tab.begin(), tab.end());
-    //double j = tab[0];
-    //double cpt = 1;
-    //for (int i = 1; i < 30; i++)
-    //{
-    //    if (tab[i] != j)
-    //    {
-    //        cout << fixed << j << " : " << cpt << endl;
-    //        j = tab[i];
-    //        cpt = 1;
-    //    }
-    //    else
-    //        cpt++;
-    //}
+Floor GenerateFloor(int nbCells, int minSize, int maxSize, int posRadius)
+{
+	random_device rd;
+	default_random_engine generator(rd());
+	normal_distribution<double> distribution(5.0, 2.0);
+	vector<Room> rooms;
+	for (int i = 0; i < nbCells; i++)
+	{
+		int width = max((int)round(NormalizedRandom(generator, distribution) * maxSize), minSize);
+		int height = max((int)round(NormalizedRandom(generator, distribution) * maxSize), minSize);
 
-    //cout << "Generation test" << endl;
-    //Graph<Room> g = { 10, 5, 10, 10 };
+		double t = NormalizedRandom(generator, distribution) * 2 * 3.14159265358979323846;
+		double r = posRadius * sqrt(NormalizedRandom(generator, distribution));
 
-    int x;
-    cin >> x;
+		int x = round(r * cos(t)) + posRadius;
+		int y = round(r * sin(t)) + posRadius;
 
-    return 0;
+		rooms.push_back(Room{ width, height, x, y });
+	}
+	return Floor{ rooms };
+}
+
+double NormalizedRandom(default_random_engine& generator, normal_distribution<double>& distribution)
+{
+	double x = distribution(generator);
+	while (x > 1 || x < 0)
+		x = distribution(generator);
+	return x;
 }

@@ -18,19 +18,19 @@ Floor::~Floor()
 
 void Floor::toOutput(std::ostream& os)
 {
-    auto arr = toArray();
-    os << "toOutput" << std::endl;
+	auto arr = toArray();
+	os << "toOutput" << std::endl;
     int i = MinY(), j = MinX();
     os << "\t";
     for (auto col1 : arr[0])
         os << j++ << " ";
     os << std::endl;
-    for (auto row : arr) {
+	for (auto row : arr) {
         os << i++ << "\t";
-    for (auto col : row)
+		for (auto col : row)
     os << col << " ";
-    os << std::endl;
-    }
+		os << std::endl;
+	}
 }
 
 void Floor::spreadRoom()
@@ -51,16 +51,16 @@ void Floor::spreadRoom()
 
 std::vector<std::vector<bool>> Floor::toArray()
 {
-   std::vector<std::vector<bool>> arr(abs(MinX()) + MaxX(),std::vector<bool>(abs(MinY()) + MaxY(),0));
-   for(Room room : rooms)
-   {
-       for(int i = 0; i < room.width; i++){
-           for(int j = 0; j < room.height; j++){
-               arr[room.position.x + i + abs(MinX())][room.position.y + j + abs(MinY())] = true;
-           }
-       }
-   }
-   return arr;
+	std::vector<std::vector<bool>> arr(abs(MinX()) + MaxX(), std::vector<bool>(abs(MinY()) + MaxY(), 0));
+	for (Room room : rooms)
+	{
+		for (int i = 0; i < room.width; i++) {
+			for (int j = 0; j < room.height; j++) {
+				arr[room.position.x + i + abs(MinX())][room.position.y + j + abs(MinY())] = true;
+			}
+		}
+	}
+	return arr;
 }
 
 int Floor::MinX()

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <numeric>
 
 std::ostream& operator<<(std::ostream& os, const Point& pt)
 {
