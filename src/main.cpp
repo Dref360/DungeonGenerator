@@ -12,10 +12,14 @@ int main(int argc, char **argv)
 {
     cout << "Graph tests" << endl;
 
-    Graph<Room> graph(150, 10, 100, 50);
-	cout << graph << endl;
+    Graph<Room> graph(4, 10, 100, 50);
+	graph.findNeighbors();
+	
+	cout << "Graph generated :" << endl << graph << endl;
+
 	auto mst = graph.mst();
-	cout << mst << endl;
+	cout << "MST generated :" << endl << mst << endl;
+
 
     cout << "Room tests" << endl;
 
@@ -38,8 +42,6 @@ int main(int argc, char **argv)
     
 
     vector<Room> rooms = { r1, r2, r3 };
-
-    /* FIXME clang causes "Illegal instruction" (with make) */
 
     Floor f1(rooms);
     f1.toOutput(cout);

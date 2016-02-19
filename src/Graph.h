@@ -6,7 +6,7 @@
 /**
  * @file Graph.h
  * @date feb. 2016
- * @brief Simple graph to apply the steering behavior algorithm.
+ * @brief Graph to manipultate nodes
  *
  */
 template<class T>
@@ -48,13 +48,21 @@ public:
 					// TODO Control the memory that the mst will use to 
 					// generate the new Graph
 
-	friend std::ostream& operator<<(std::ostream& os, const Graph<T>& graph);
+	friend std::ostream& operator<<(std::ostream& os, const Graph& graph)
+	{
+		for(auto node : graph.nodes)
+		{
+			os << node.content << std::endl;
+			for (auto neighbor : node.neighbors)
+				os << '\t' << neighbor.content << std::endl;
+		}
+		return os;
+	}
 
 private:
-    int THRESHOLD = 50;
+    float THRESHOLD = 100;
     std::vector<Node> nodes;
     std::default_random_engine generator;
 
 	void GenerateRooms(int nbCells, int minSize, int maxSize, int posRadius);
 };
-

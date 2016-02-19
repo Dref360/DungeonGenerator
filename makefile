@@ -38,7 +38,7 @@ directories:
 	@mkdir -p {$(BIN_DIR),$(OBJ_DIR)}
 
 .PHONY: debug
-debug: CFLAGS += -DDEBUG -g -O0
+debug: CFLAGS += -DDEBUG -g -O0 -v
 debug: all
 
 .PHONY: release

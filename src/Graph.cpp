@@ -32,9 +32,9 @@ void Graph<Room>::steer()
 template<>
 void Graph<Room>::findNeighbors()
 {
-    for(auto node1 : nodes)
+    for(auto& node1 : nodes)
     {
-        for(auto node2 : nodes)
+        for(auto& node2 : nodes)
         {
             if(&node2 == &node1)
                 continue;
@@ -50,21 +50,29 @@ Graph<T> Graph<T>::mst()
 	Graph<T> mst{}; // Initialize new Graph to contain Minimum Spanning Tree
 
 	// Recursive function - Depth Search First
-	std::function<void (Node,Graph<T>)> DSF
-		= [&](Node node, Graph<T> mst)
+	std::function<void(Node&)> DSF
+		= [&](Node& node)
 		{
-			for(Node next : node.neighbors)
+			for(Node& next : node.neighbors)
 				if(std::find(std::begin(mst.nodes), 
 							 std::end(mst.nodes),
 							 next) 
-					!= std::end(mst.nodes)) 
+					== std::end(mst.nodes)) // if mst does not contain this node
 				{
+					// Construct a new node with it's parent
 					mst.nodes.emplace_back(next, node);
-					DSF(next, mst);
+					DSF(next);
 				}
 		};
 
-	DSF(mst.nodes[0], mst);
+	/*
+	 * Note: The resulting Graph will only contain unidirectional links
+	 *
+	 * e.g.
+	 * A has B in it's neighbors
+	 * B will NOT have A in it's neighbors
+	 */
+	DSF(nodes.front());
 
 	return mst;
 }
@@ -98,17 +106,6 @@ double Graph<T>::NormalizedRandom()
     return x;
 }
 
-template<class T>
-std::ostream& operator<<(std::ostream& os, const Graph<T>& graph)
-{
-	for(auto node : graph.nodes)
-	{
-		os << node.content << std::endl;
-		for (auto neighbor : node.neighbors)
-			os << '\t' << neighbor.content << std::endl;
-	}
-	return os;
-}
 
 // Explicit declaration of template use
 template class Graph<Room>;

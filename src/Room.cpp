@@ -57,7 +57,7 @@ float Room::distance(const Room& room) const
 
 std::ostream& operator<<(std::ostream& os, const Room& room)
 {
-	os << '(' << room.position.x << ',' << room.position.y << ')' << '[' << room.width << ',' << room.height << ']' << std::endl;
+	os << '(' << room.position.x << ',' << room.position.y << ')' << '[' << room.width << ',' << room.height << ']';
 	return os;
 }
 
