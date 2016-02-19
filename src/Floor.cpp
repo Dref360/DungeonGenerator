@@ -1,6 +1,7 @@
 #include "Floor.h"
 #include "Room.h"
 #include <numeric>
+#include <iostream>
 
 Floor::Floor()
 {
@@ -15,18 +16,31 @@ Floor::~Floor()
 {
 }
 
+void Floor::toOutput(std::ostream& os)
+{
+	auto arr = toArray();
+	os << "toOutput" << std::endl;
+	for (auto row : arr) {
+		for (auto col : row)
+			os << col;
+		os << std::endl;
+	}
+}
+
 std::vector<std::vector<bool>> Floor::toArray()
 {
-   std::vector<std::vector<bool>> arr(abs(MinX()) + MaxX(),std::vector<bool>(abs(MinY()) + MaxY(),0));
-   for(Room room : rooms)
-   {
-       for(int i = 0; i < room.width; i++){
-           for(int j = 0; j < room.height; j++){
-               arr[room.position.x + i + abs(MinX())][room.position.y + j + abs(MinY())] = true;
-           }
-       }
-   }
-   return arr;
+	int minx = MinX();
+	int miny = MinY();
+	std::vector<std::vector<bool>> arr(abs(MinX()) + MaxX(), std::vector<bool>(abs(MinY()) + MaxY(), 0));
+	for (Room room : rooms)
+	{
+		for (int i = 0; i < room.width; i++) {
+			for (int j = 0; j < room.height; j++) {
+				arr[room.position.x + i + abs(MinX())][room.position.y + j + abs(MinY())] = true;
+			}
+		}
+	}
+	return arr;
 }
 
 int Floor::MinX()

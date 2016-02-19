@@ -4,13 +4,13 @@
 
 class Point {
 
-public:
+ public:
     int x;
     int y;
     Point(int x, int y)
         :x{ x }, y{ y }
     {}
-
+    
     Point()
         :x{ 0 }, y{ 0 }
     {}
@@ -29,25 +29,36 @@ public:
         res.y = y - other.y;
         return res;
     }
+    Point operator*(const int factor) const
+    {
+        Point res;
+        res.x  = x * factor;
+        res.y = y * factor;
+        return res;
+    }
+    
+    bool operator!=(const Point& other) const
+    {
+        return x != other.x || y != other.y;
+    }
 };
 
 class Room
 {
 public:
-    Room(int w, int h, int x, int y);
     Room();
     ~Room();
-    Room(Point position, int width, int height)
-        : position{ position }, width{ width }, height{ height }
+    Room(Point position,int width, int height)
+    : position {position}, width {width}, height{height}
     {}
+    Room(int width,int height,int x , int y);
     int width;
     int height;
     Point position;
-    // TODO Room or Graph job ?
+	// TODO Room or Graph job ?
     Point GetSteeringNewPosition(std::vector<Room>& neibors);
     Point middle() const;
     bool intersect(const Room&) const;
     float distance(const Room&) const;
 
 };
-
