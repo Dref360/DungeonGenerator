@@ -3,6 +3,11 @@
 #include <algorithm>
 #include <iostream>
 
+std::ostream& operator<<(std::ostream& os, const Point& pt)
+{
+    return os<< "(" << pt.x << "," << pt.y<<")";
+}
+
 Room::Room()
 : position {Point()},width {0},height{0}
 {}
@@ -16,6 +21,19 @@ Room::~Room()
 {
 }
 
+Point move(const Room& room1, const Room& room2)
+{
+    Point newPos = room1.middle() - room2.middle();
+    if(newPos.x == 0 && newPos.y == 0)
+    {
+        //Room perfectly overlap
+        newPos.x = 1;
+        newPos.y = 1;
+    }
+    return newPos;
+    
+}
+
 Point Room::GetSteeringNewPosition(std::vector<Room>& neibors)
 {
     Point vectorino;
@@ -23,11 +41,13 @@ Point Room::GetSteeringNewPosition(std::vector<Room>& neibors)
     vectorino.y = 0;
     auto vectorSteering = std::accumulate(begin(neibors),end(neibors), vectorino, [&](const Point& acc,Room& x)
     {
-      return intersect(x) ? acc + (x.middle() - middle()) : acc;
+      std::cout<<position << " avec " << x.position << " Intersect : " << (intersect(x) ? "True" : "False") << " Same : " << (&x != this) << std::endl;
+      return intersect(x) && (&x != this) ? acc + move(x,*this) : acc;
     } );
     std::cout << vectorSteering.x << ".." << vectorSteering.y << std::endl;
     return position + vectorSteering * -1;
 }
+
 
 bool Room::intersect(const Room& room) const
 {

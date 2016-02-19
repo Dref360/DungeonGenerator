@@ -33,8 +33,8 @@ int main(int argc, char **argv)
     
     r3.height = 2;
     r3.width = 2;
-    r3.position.x = 1;
-    r3.position.y = 2;
+    r3.position.x = 3;
+    r3.position.y = 3;
     
 
     vector<Room> rooms = { r1, r2, r3 };
@@ -44,6 +44,9 @@ int main(int argc, char **argv)
     Floor f1(rooms);
     f1.toOutput(cout);
     
+    f1.spreadRoom();
+    
+    f1.toOutput(cout);
     int h;
     cin>> h;
     //Test, a room is now out

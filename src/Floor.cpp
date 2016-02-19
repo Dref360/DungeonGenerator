@@ -33,6 +33,21 @@ void Floor::toOutput(std::ostream& os)
     }
 }
 
+void Floor::spreadRoom()
+{
+    bool hasChanged;
+    do
+    {
+        hasChanged = false;
+        for(Room& room : rooms)
+        {
+            auto p = room.GetSteeringNewPosition(rooms);
+            hasChanged |= (p != room.position);
+            room.position = p;
+        }
+        
+    }while(hasChanged);
+}
 
 std::vector<std::vector<bool>> Floor::toArray()
 {

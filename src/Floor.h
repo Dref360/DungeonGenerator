@@ -14,6 +14,7 @@ public:
     std::vector<Room> rooms;
     std::vector<std::vector<bool>> toArray();
     void toOutput(std::ostream&);
+    void spreadRoom();
 private:
     int MinX();
     int MaxX();
