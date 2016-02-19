@@ -14,9 +14,13 @@ int main(int argc, char **argv)
 {
 	cout << "Graph tests" << endl;
 
-	Graph<Room> graph();
-	Graph<Room>::Node node;
-	node.content.width = 3;
+    Graph<Room> graph;
+	graph.findNeighbors();
+	
+	cout << "Graph generated :" << endl << graph << endl;
+
+	auto mst = graph.mst();
+	cout << "MST generated :" << endl << mst << endl;
 
 
 	cout << "Room tests" << endl;

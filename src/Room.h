@@ -1,6 +1,7 @@
 #ifndef ROOM_H
 #define ROOM_H
 
+#include <ostream>
 #include <vector>
 #include <iostream>
 
@@ -38,11 +39,14 @@ class Point {
         res.y = y * factor;
         return res;
     }
-    
-    bool operator!=(const Point& other) const
-    {
-        return x != other.x || y != other.y;
-    }
+
+	bool operator==(const Point& other) const
+	{ 
+		return x == other.x
+			&& y == other.y;
+	}
+	bool operator!=(const Point& other) const
+	{ return !(*this == other); }
 };
 
 class Room
@@ -57,11 +61,21 @@ public:
     int width;
     int height;
     Point position;
-	// TODO Room or Graph job ?
     Point GetSteeringNewPosition(std::vector<Room>& neibors);
     Point middle() const;
     bool intersect(const Room&) const;
     float distance(const Room&) const;
 
+	bool operator==(const Room& other) const
+	{ 
+		return position == other.position 
+			&& height   == other.height
+			&& width    == other.width;
+	}
+	bool operator!=(const Room& other) const
+	{ return !(*this == other); }
+
+	friend std::ostream& operator<<(std::ostream& os, const Room& room);
 };
+
 #endif
