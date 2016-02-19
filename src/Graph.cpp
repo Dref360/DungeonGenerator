@@ -1,5 +1,6 @@
 #include "Graph.h"
 #include "Room.h"
+
 #include <math.h>
 #include <algorithm>
 #include <iterator>
@@ -8,8 +9,7 @@
 
 template<class T>
 Graph<T>::Graph()
-{
-}
+{}
 
 template<>
 Graph<Room>::Graph(int nbCells, int minSize, int maxSize, int posRadius)
@@ -17,7 +17,6 @@ Graph<Room>::Graph(int nbCells, int minSize, int maxSize, int posRadius)
     Graph::GenerateRooms(nbCells, minSize, maxSize, posRadius);
 }
 
-// Add a trait (e.g. Position) to Room to treat general cases
 template<>
 void Graph<Room>::steer()
 {
@@ -29,39 +28,44 @@ void Graph<Room>::steer()
 	
 }
 
-//This will find every neibourghs around every node. O(n²)
-//template<>
-//void Graph<Room>::findNeighbour()
-//{
-//    for(auto node1 : nodes)
-//    {
-//        for(auto node2 : nodes)
-//        {
-//            if(&node2 == &node1)
-//                continue;
-//            if(node1.content.distance(node2.content) < THREASHOLD)
-//                node1.neighbors.push_back(node2.content);
-//        }
-//    }
-//}
+//This will find every neighbors around every node. O(n²)
+template<>
+void Graph<Room>::findNeighbors()
+{
+    for(auto node1 : nodes)
+    {
+        for(auto node2 : nodes)
+        {
+            if(&node2 == &node1)
+                continue;
+            if(node1.content.distance(node2.content) < THRESHOLD)
+                node1.neighbors.push_back(node2);
+        }
+    }
+}
 
 template<class T>
 Graph<T> Graph<T>::mst()
 {
-	Graph<T> mst{}; // Initialize new Graph with same number of nodes
+	Graph<T> mst{}; // Initialize new Graph to contain Minimum Spanning Tree
 
-	std::function<void (Node,Graph<T>)> DSF = [&](Node node, Graph<T> mst)
-	{
-		for(auto next : node.neighbors)
-			if(std::find(std::begin(mst.nodes), std::end(mst.nodes), next) != std::end(mst.nodes)) 
-			{
-				mst.nodes.emplace_back(next); // TODO add parent to neighbor
-				DSF(next, mst);
-			}
-	};
+	// Recursive function - Depth Search First
+	std::function<void (Node,Graph<T>)> DSF
+		= [&](Node node, Graph<T> mst)
+		{
+			for(Node next : node.neighbors)
+				if(std::find(std::begin(mst.nodes), 
+							 std::end(mst.nodes),
+							 next) 
+					!= std::end(mst.nodes)) 
+				{
+					mst.nodes.emplace_back(next, node);
+					DSF(next, mst);
+				}
+		};
 
 	DSF(mst.nodes[0], mst);
-	
+
 	return mst;
 }
 
@@ -92,6 +96,18 @@ double Graph<T>::NormalizedRandom()
         x = distribution(generator);
 
     return x;
+}
+
+template<class T>
+std::ostream& operator<<(std::ostream& os, const Graph<T>& graph)
+{
+	for(auto node : graph.nodes)
+	{
+		os << node.content << std::endl;
+		for (auto neighbor : node.neighbors)
+			os << '\t' << neighbor.content << std::endl;
+	}
+	return os;
 }
 
 // Explicit declaration of template use

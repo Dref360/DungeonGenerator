@@ -13,6 +13,9 @@ int main(int argc, char **argv)
     cout << "Graph tests" << endl;
 
     Graph<Room> graph(150, 10, 100, 50);
+	cout << graph << endl;
+	auto mst = graph.mst();
+	cout << mst << endl;
 
     cout << "Room tests" << endl;
 

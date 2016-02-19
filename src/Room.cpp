@@ -54,3 +54,10 @@ float Room::distance(const Room& room) const
     auto midRoom = room.middle();
     return sqrt(std::pow(midThis.x + midRoom.x,2)+std::pow(midThis.y + midRoom.y,2) );
 }
+
+std::ostream& operator<<(std::ostream& os, const Room& room)
+{
+	os << '(' << room.position.x << ',' << room.position.y << ')' << '[' << room.width << ',' << room.height << ']' << std::endl;
+	return os;
+}
+

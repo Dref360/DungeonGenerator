@@ -1,4 +1,5 @@
 #pragma once
+#include <ostream>
 #include <vector>
 #include <random>
 
@@ -15,6 +16,11 @@ class Graph
 		public:
 			T content;
 			std::vector<Node> neighbors;
+
+			template<class ... Args>
+			Node(Node val, Args &&  ... args)
+				: content{val.content}, neighbors{args...}
+			{}
 
 			Node(T && val)
 				: content{std::move(val)}
@@ -35,14 +41,17 @@ public:
 	Graph();
     Graph(int nbCells, int minSize, int maxSize, int posRadius);
     
-    void findNeighbour();
+    void findNeighbors();
     void steer();		// Apply the steering behavior(ish) algorithm
     double NormalizedRandom();
 	Graph<T> mst(); // Returns a new Graph, Minimum Spanning Tree of *this 
 					// TODO Control the memory that the mst will use to 
 					// generate the new Graph
+
+	friend std::ostream& operator<<(std::ostream& os, const Graph<T>& graph);
+
 private:
-    int THREASHOLD = 50;
+    int THRESHOLD = 50;
     std::vector<Node> nodes;
     std::default_random_engine generator;
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ostream>
 #include <vector>
 
 class Point {
@@ -69,7 +70,6 @@ public:
     bool intersect(const Room&) const;
     float distance(const Room&) const;
 
-
 	bool operator==(const Room& other)
 	{ 
 		return position == other.position 
@@ -79,4 +79,5 @@ public:
 	bool operator!=(const Room& other)
 	{ return !(*this == other); }
 
+	friend std::ostream& operator<<(std::ostream& os, const Room& room);
 };
