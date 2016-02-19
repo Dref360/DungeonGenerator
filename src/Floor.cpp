@@ -20,9 +20,15 @@ void Floor::toOutput(std::ostream& os)
 {
     auto arr = toArray();
     os << "toOutput" << std::endl;
+    int i = MinY(), j = MinX();
+    os << "\t";
+    for (auto col1 : arr[0])
+        os << j++ << " ";
+    os << std::endl;
     for (auto row : arr) {
+        os << i++ << "\t";
     for (auto col : row)
-    os << col;
+    os << col << " ";
     os << std::endl;
     }
 }

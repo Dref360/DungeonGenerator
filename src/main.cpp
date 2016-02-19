@@ -23,8 +23,8 @@ int main(int argc, char **argv)
 
     r1.height = 2;
     r1.width = 2;
-    r1.position.x = 1;
-    r1.position.y = 1;
+    r1.position.x = -1;
+    r1.position.y = -1;
 
     r2.height = 3;
     r2.width = 3;
@@ -44,6 +44,8 @@ int main(int argc, char **argv)
     Floor f1(rooms);
     f1.toOutput(cout);
     
+    int h;
+    cin>> h;
     //Test, a room is now out
     Point p = r1.GetSteeringNewPosition(rooms);
     cout << "x: " << p.x << endl << "y: " << p.y << endl;
