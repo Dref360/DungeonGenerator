@@ -22,7 +22,7 @@ class Graph
 			{}
 
 			Node(T && val)
-				: content{std::move(val)}
+				: content{std::forward(val)}
 			{}
 
 			bool operator==(const Node& other) const
