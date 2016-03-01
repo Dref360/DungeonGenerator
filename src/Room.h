@@ -61,7 +61,7 @@ public:
     int width;
     int height;
     Point position;
-    Point GetSteeringNewPosition(std::vector<Room>& neibors);
+    Point GetSteeringNewPosition(std::vector<Room>& neighbours);
     Point middle() const;
     bool intersect(const Room&) const;
     float distance(const Room&) const;

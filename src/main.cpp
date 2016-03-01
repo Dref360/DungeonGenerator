@@ -14,14 +14,13 @@ int main(int argc, char **argv)
 {
 	cout << "Graph tests" << endl;
 
-    Graph<Room> graph;
+	Graph<Room> graph;
 	graph.findNeighbors();
-	
+
 	cout << "Graph generated :" << endl << graph << endl;
 
 	auto mst = graph.mst();
 	cout << "MST generated :" << endl << mst << endl;
-
 
 	cout << "Room tests" << endl;
 
@@ -29,33 +28,53 @@ int main(int argc, char **argv)
 
 	r1.height = 2;
 	r1.width = 2;
-    r1.position.x = -1;
-    r1.position.y = -1;
+	r1.position.x = -1;
+	r1.position.y = -1;
 
 	r2.height = 3;
 	r2.width = 3;
 	r2.position.x = 3;
 	r2.position.y = 3;
-    
-    r3.height = 2;
-    r3.width = 2;
-    r3.position.x = 3;
-    r3.position.y = 3;
-    
 
-    vector<Room> rooms = { r1, r2, r3 };
+	r3.height = 2;
+	r3.width = 2;
+	r3.position.x = 3;
+	r3.position.y = 3;
 
-    Floor f1(rooms);
-    f1.toOutput(cout);
-    
-    f1.spreadRoom();
-    
-    f1.toOutput(cout);
+	vector<Room> rooms = { r1, r2, r3 };
+
+	Floor f1(rooms);
+	f1.toOutput(cout);
+
+	f1.spreadRoom();
+
+	f1.toOutput(cout);
 
 	cout << endl << endl << "Floor generation..." << endl;
 	Floor f2 = GenerateFloor(30, 5, 10, 20);
 	f2.toOutput(cout);
 
+	f2.spreadRoom();
+
+	f2.toOutput(cout);
+
+	Graph<Room> g = { f2.rooms };
+	vector<vector<bool>> arr = g.mst().generateCorridors(f2.toArray());
+
+	//Output with corridors
+	cout << "toOutput" << std::endl;
+	int i = f2.MinY(), j = f2.MinX();
+	cout << "\t";
+	for (auto col1 : arr[0])
+		cout << j++ << " ";
+	cout << std::endl;
+	for (auto row : arr) {
+		cout << i++ << "\t";
+		for (auto col : row)
+			cout << col << " ";
+		cout << std::endl;
+	}
+	
 	int x;
 	cin >> x;
 

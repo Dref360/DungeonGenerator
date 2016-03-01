@@ -35,18 +35,18 @@ void Floor::toOutput(std::ostream& os)
 
 void Floor::spreadRoom()
 {
-    bool hasChanged;
-    do
-    {
-        hasChanged = false;
-        for(Room& room : rooms)
-        {
-            auto p = room.GetSteeringNewPosition(rooms);
-            hasChanged |= (p != room.position);
-            room.position = p;
-        }
-        
-    }while(hasChanged);
+	bool hasChanged;
+	do
+	{
+		hasChanged = false;
+		for (Room& room : rooms)
+		{
+			auto p = room.GetSteeringNewPosition(rooms);
+			hasChanged |= (p != room.position);
+			room.position = p;
+		}
+
+	} while (hasChanged);
 }
 
 std::vector<std::vector<bool>> Floor::toArray()
@@ -91,6 +91,6 @@ int Floor::MaxY()
 {
     return std::accumulate(begin(rooms),end(rooms),INT32_MIN,[](const int acc,Room& room)
         {
-            return std::max(acc,room.position.x + room.height);
+            return std::max(acc,room.position.y + room.height);
         });
 }

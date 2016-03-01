@@ -15,10 +15,10 @@ public:
     std::vector<std::vector<bool>> toArray();
     void toOutput(std::ostream&);
     void spreadRoom();
+	int MinX();
+	int MaxX();
+	int MinY();
+	int MaxY();
 private:
-    int MinX();
-    int MaxX();
-    int MinY();
-    int MaxY();
 
 };
