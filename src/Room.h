@@ -55,7 +55,7 @@ public:
     Room();
     ~Room();
     Room(Point position,int width, int height)
-    : position {position}, width {width}, height{height}
+    : width {width}, height{height}, position {position}
     {}
     Room(int width,int height,int x , int y);
     int width;

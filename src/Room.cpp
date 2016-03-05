@@ -10,11 +10,11 @@ std::ostream& operator<<(std::ostream& os, const Point& pt)
 }
 
 Room::Room()
-	: position{ Point() }, width{ 0 }, height{ 0 }
+	: width{ 0 }, height{ 0 }, position{ Point() } 
 {}
 
 Room::Room(int w, int h, int x, int y)
-	: position{ Point(x, y) }, width{ w }, height{ h }
+	: width{ w }, height{ h }, position{ Point(x, y) } 
 {}
 
 

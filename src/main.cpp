@@ -12,18 +12,6 @@ double NormalizedRandom(default_random_engine&, normal_distribution<double>&);
 
 int main(int argc, char **argv)
 {
-	cout << "Graph tests" << endl;
-
-	Graph<Room> graph;
-	graph.findNeighbors();
-
-	cout << "Graph generated :" << endl << graph << endl;
-
-	auto mst = graph.mst();
-	cout << "MST generated :" << endl << mst << endl;
-
-	cout << "Room tests" << endl;
-
 	Room r1, r2, r3;
 
 	r1.height = 2;
@@ -58,8 +46,24 @@ int main(int argc, char **argv)
 
 	f2.toOutput(cout);
 
-	Graph<Room> g = { f2.rooms };
-	vector<vector<bool>> arr = g.mst().generateCorridors(f2.toArray());
+	cout << endl << endl << "Graph generation from Floor" << endl;
+	Graph<Room> graph = { f2.rooms };
+
+	cout << endl << "linking neighbors" << endl;
+	graph.findNeighbors();
+
+	cout << "Graph generated :" << endl << graph << endl;
+
+	cout << endl << "computing minimum spanning tree" << endl;
+	graph.mst();
+
+	cout << "MST generated :" << endl << graph << endl;
+
+	exit(0);
+	cout << endl << "generating corridors" << endl;
+	vector<vector<bool>> arr = graph.generateCorridors(f2.toArray());
+
+	cout << "done" << endl;
 
 	//Output with corridors
 	cout << "toOutput" << std::endl;

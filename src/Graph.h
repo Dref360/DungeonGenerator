@@ -14,12 +14,7 @@ class Graph
 	class Node {
 	public:
 		T content;
-		std::vector<Node> neighbors;
-
-		template<class ... Args>
-		Node(Node val, Args &&  ... args)
-			: content{ val.content }, neighbors{ args... }
-		{}
+		std::vector<Node*> neighbors;
 
 		Node(T && val)
 			: content{ std::forward<T>(val) }
@@ -37,25 +32,21 @@ class Graph
 
 public:
 
-	//Graph() = delete;	// Propably will be constructed from provided nodes 
-	// (e.g. stream, pre-allocated)
-	Graph();
+	Graph<T>();
 
 	Graph<T>(std::vector<T> rooms);
 
 	void findNeighbors();
 
-	Graph<T> mst(); // Returns a new Graph, Minimum Spanning Tree of *this 
-					// TODO Control the memory that the mst will use to 
-					// generate the new Graph
-
+	void mst();
+	
 	friend std::ostream& operator<<(std::ostream& os, const Graph& graph)
 	{
 		for (auto node : graph.nodes)
 		{
 			os << node.content << std::endl;
 			for (auto neighbor : node.neighbors)
-				os << '\t' << neighbor.content << std::endl;
+				os << '\t' << neighbor->content << std::endl;
 		}
 		return os;
 	}
@@ -64,7 +55,7 @@ public:
 
 private:
 
-	float THRESHOLD = 100;
+	float THRESHOLD = 50;
 
 	std::vector<Node> nodes;
 };
