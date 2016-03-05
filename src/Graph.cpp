@@ -1,5 +1,6 @@
 #include "Graph.h"
 #include "Room.h"
+#include "Floor.h"
 
 #include <algorithm>
 #include <iterator>
@@ -31,19 +32,36 @@ void Graph<Room>::findNeighbors()
 }
 
 template<>
-std::vector<std::vector<bool>> Graph<Room>::generateCorridors(std::vector<std::vector<bool>> arr)
+std::vector<std::vector<bool>> Graph<Room>::generateCorridors(Floor& floor)
 {
+	auto arr = floor.toArray();
 	for (Graph<Room>::Node room : Graph<Room>::nodes)
 	{
-		for (Graph<Room>::Node* neighbor : room.neighbors)
+		for (Graph<Room>::Node* neighbour : room.neighbors)
 		{
-			int x = room.content.middle().x - neighbor->content.middle().x;
-			int y = room.content.middle().y - neighbor->content.middle().y;
+			int minX = abs(floor.MinX());
+			int minY = abs(floor.MinY());
+			int x = room.content.distanceX(neighbour->content);
+			int y = room.content.distanceY(neighbour->content);
+
+			//Horizontal part of corridor
 			int i = 0;
-			for (; i < x; i++)
-				arr[room.content.middle().x + i][room.content.middle().y] = true;
-			for (int j = 0; i < y; j++)
-				arr[room.content.middle().x + i][room.content.middle().y + j] = true;
+			if (room.content.middle().x < neighbour->content.middle().x)
+				for (; i < x; i++)
+					arr[minX + room.content.middle().x + i][minY + room.content.middle().y] = true;
+			else
+				for (; i > (-1)*x; i--)
+					arr[minX + room.content.middle().x + i][minY + room.content.middle().y] = true;
+
+
+			//Vertical part of corridor
+			if (room.content.middle().y < neighbour->content.middle().y)
+				for (int j = 0; j < y; j++)
+					arr[minX + room.content.middle().x + i][minY + room.content.middle().y + j] = true;
+			else
+				for (int j = 0; j > (-1)*y; j--)
+					arr[minX + room.content.middle().x + i][minY + room.content.middle().y + j] = true;
+
 		}
 	}
 	return arr;

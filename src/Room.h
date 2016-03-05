@@ -65,6 +65,8 @@ public:
     Point middle() const;
     bool intersect(const Room&) const;
     float distance(const Room&) const;
+	int distanceX(const Room&) const;
+	int distanceY(const Room&) const;
 
 	bool operator==(const Room& other) const
 	{ 

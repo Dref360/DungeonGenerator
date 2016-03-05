@@ -13,7 +13,6 @@ double NormalizedRandom(default_random_engine&, normal_distribution<double>&);
 int main(int argc, char **argv)
 {
 	Room r1, r2, r3;
-
 	r1.height = 2;
 	r1.width = 2;
 	r1.position.x = -1;
@@ -59,9 +58,8 @@ int main(int argc, char **argv)
 
 	cout << "MST generated :" << endl << graph << endl;
 
-	exit(0);
 	cout << endl << "generating corridors" << endl;
-	vector<vector<bool>> arr = graph.generateCorridors(f2.toArray());
+	auto arr = graph.generateCorridors(f2);
 
 	cout << "done" << endl;
 

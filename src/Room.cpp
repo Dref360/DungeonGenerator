@@ -76,6 +76,16 @@ float Room::distance(const Room& room) const
 	return sqrt(std::pow(midThis.x + midRoom.x, 2) + std::pow(midThis.y + midRoom.y, 2));
 }
 
+int Room::distanceX(const Room& room) const
+{
+	return abs(middle().x - room.middle().x);
+}
+
+int Room::distanceY(const Room& room) const
+{
+	return abs(middle().y - room.middle().y);
+}
+
 std::ostream& operator<<(std::ostream& os, const Room& room)
 {
 	os << '(' << room.position.x << ',' << room.position.y << ')' << '[' << room.width << ',' << room.height << ']';

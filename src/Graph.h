@@ -1,4 +1,6 @@
 #pragma once
+#include "Floor.h"
+
 #include <ostream>
 #include <vector>
 
@@ -51,7 +53,7 @@ public:
 		return os;
 	}
 
-	std::vector<std::vector<bool>> generateCorridors(std::vector<std::vector<bool>> arr);
+	std::vector<std::vector<bool>> generateCorridors(Floor& floor);
 
 private:
 
