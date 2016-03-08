@@ -18,20 +18,21 @@ Graph<T>::Graph(std::vector<T> & contents)
 template<>
 void Graph<Room>::findNeighbors()
 {
-	for (auto & node : nodes)
+	auto i = 0;
+	while (i < nodes.size())
 	{
 		for (auto & other : nodes)
-		{
-			if (node != other && 
-				node.content->distance(*other.content) < THRESHOLD)
-				node.neighbors.push_back(&other);
-		}
+			if (nodes[i] != other && 
+				nodes[i].content->distance(*other.content) < THRESHOLD)
+				nodes[i].neighbors.push_back(&other);
 
-		if (node.neighbors.empty())
+		if (nodes[i].neighbors.empty())
 		{
-			node.swap(nodes.back());
+			nodes[i].swap(nodes.back());
 			nodes.pop_back();
 		}
+		else
+			++i;
 	}
 }
 
