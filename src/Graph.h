@@ -25,9 +25,8 @@ class Graph
 
 		void swap(Node& other)
 		{
-			using std::swap;
-			swap(content, other.content);
-			swap(neighbors, other.neighbors);
+			std::swap(content, other.content);
+			neighbors.swap(other.neighbors);
 		}
 
 		bool operator==(const Node& other) const

@@ -73,7 +73,7 @@ float Room::distance(const Room& room) const
 {
 	auto midThis = middle();
 	auto midRoom = room.middle();
-	return sqrt(std::pow(midThis.x + midRoom.x, 2) + std::pow(midThis.y + midRoom.y, 2));
+	return sqrt(std::pow(midThis.x - midRoom.x, 2) + std::pow(midThis.y - midRoom.y, 2));
 }
 
 int Room::distanceX(const Room& room) const
