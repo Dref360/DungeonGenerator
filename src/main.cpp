@@ -65,20 +65,13 @@ int main(int argc, char **argv)
 
 	//Output with corridors
 	cout << "toOutput" << std::endl;
-	int i = f2.MinY(), j = f2.MinX();
-	cout << "\t";
-	for (auto col1 : arr[0])
-		cout << j++ << " ";
-	cout << std::endl;
-	for (auto row : arr) {
-		cout << i++ << "\t";
+
+	for (auto row : arr)
+	{
 		for (auto col : row)
-			cout << col << " ";
+			cout << (col ? "\u2588" : " ");
 		cout << std::endl;
 	}
-	
-	int x;
-	cin >> x;
 
 	return 0;
 }

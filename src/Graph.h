@@ -2,6 +2,7 @@
 #include "Floor.h"
 
 #include <ostream>
+#include <utility>
 #include <vector>
 
 /**
@@ -15,12 +16,19 @@ class Graph
 {
 	class Node {
 	public:
-		T content;
+		T* content;
 		std::vector<Node*> neighbors;
 
-		Node(T && val)
-			: content{ std::forward<T>(val) }
+		Node(T* content)
+			: content{ content }
 		{}
+
+		void swap(Node& other)
+		{
+			using std::swap;
+			swap(content, other.content);
+			swap(neighbors, other.neighbors);
+		}
 
 		bool operator==(const Node& other) const
 		{
@@ -34,26 +42,24 @@ class Graph
 
 public:
 
-	Graph<T>();
-
-	Graph<T>(std::vector<T> rooms);
+	Graph<T>(std::vector<T> & contents);
 
 	void findNeighbors();
 
 	void mst();
 	
+	std::vector<std::vector<bool>> generateCorridors(Floor& floor);
+
 	friend std::ostream& operator<<(std::ostream& os, const Graph& graph)
 	{
 		for (auto node : graph.nodes)
 		{
-			os << node.content << std::endl;
+			os << *node.content << std::endl;
 			for (auto neighbor : node.neighbors)
-				os << '\t' << neighbor->content << std::endl;
+				os << '\t' << *neighbor->content << std::endl;
 		}
 		return os;
 	}
-
-	std::vector<std::vector<bool>> generateCorridors(Floor& floor);
 
 private:
 

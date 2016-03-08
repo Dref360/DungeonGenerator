@@ -7,28 +7,32 @@
 #include <functional>
 
 template<class T>
-Graph<T>::Graph()
-{}
-
-template<class T>
-Graph<T>::Graph(std::vector<T> nodes)
+Graph<T>::Graph(std::vector<T> & contents)
 {
-	for (T node : nodes)
-		this->nodes.push_back(Node{ std::move(node) }); // Affect the vector's reference instead ?
+	nodes.reserve(contents.size());
+	for (auto & content : contents)
+		nodes.emplace_back(&content);
 }
 
 //This will find every neighbors around every node. O(n²)
 template<>
 void Graph<Room>::findNeighbors()
 {
-	for (auto& node1 : nodes)
-		for (auto& node2 : nodes)
+	for (auto & node : nodes)
+	{
+		for (auto & other : nodes)
 		{
-			if (node1 == node2)
-				continue;
-			if (node1.content.distance(node2.content) < THRESHOLD)
-				node1.neighbors.push_back(&node2);
+			if (node != other && 
+				node.content->distance(*other.content) < THRESHOLD)
+				node.neighbors.push_back(&other);
 		}
+
+		if (node.neighbors.empty())
+		{
+			node.swap(nodes.back());
+			nodes.pop_back();
+		}
+	}
 }
 
 template<>
@@ -41,26 +45,26 @@ std::vector<std::vector<bool>> Graph<Room>::generateCorridors(Floor& floor)
 		{
 			int minX = abs(floor.MinX());
 			int minY = abs(floor.MinY());
-			int x = room.content.distanceX(neighbour->content);
-			int y = room.content.distanceY(neighbour->content);
+			int x = room.content->distanceX(*neighbour->content);
+			int y = room.content->distanceY(*neighbour->content);
 
 			//Horizontal part of corridor
 			int i = 0;
-			if (room.content.middle().x < neighbour->content.middle().x)
+			if (room.content->middle().x < neighbour->content->middle().x)
 				for (; i < x; i++)
-					arr[minX + room.content.middle().x + i][minY + room.content.middle().y] = true;
+					arr[minX + room.content->middle().x + i][minY + room.content->middle().y] = true;
 			else
 				for (; i > (-1)*x; i--)
-					arr[minX + room.content.middle().x + i][minY + room.content.middle().y] = true;
+					arr[minX + room.content->middle().x + i][minY + room.content->middle().y] = true;
 
 
 			//Vertical part of corridor
-			if (room.content.middle().y < neighbour->content.middle().y)
+			if (room.content->middle().y < neighbour->content->middle().y)
 				for (int j = 0; j < y; j++)
-					arr[minX + room.content.middle().x + i][minY + room.content.middle().y + j] = true;
+					arr[minX + room.content->middle().x + i][minY + room.content->middle().y + j] = true;
 			else
 				for (int j = 0; j > (-1)*y; j--)
-					arr[minX + room.content.middle().x + i][minY + room.content.middle().y + j] = true;
+					arr[minX + room.content->middle().x + i][minY + room.content->middle().y + j] = true;
 
 		}
 	}
