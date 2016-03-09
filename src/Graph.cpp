@@ -14,6 +14,12 @@ Graph<T>::Graph(std::vector<T> & contents)
 		nodes.emplace_back(&content);
 }
 
+template<class T>
+Graph<T>::Graph()
+{
+    
+}
+
 //This will find every neighbors around every node. O(n²)
 template<>
 void Graph<Room>::findNeighbors()

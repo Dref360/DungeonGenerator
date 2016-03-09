@@ -42,6 +42,8 @@ class Graph
 public:
 
 	Graph<T>(std::vector<T> & contents);
+    
+    Graph<T>();
 
 	void findNeighbors();
 

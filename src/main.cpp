@@ -1,16 +1,73 @@
 #include "Floor.h"
 #include "Graph.h"
 #include "Room.h"
+#include "Helper/TimerRAII.h"
 
 #include <iostream>
 #include <vector>
 #include <random>
+#include <fstream>
 
 using namespace std;
 Floor GenerateFloor(int, int, int, int);
 double NormalizedRandom(default_random_engine&, normal_distribution<double>&);
 
+
 int main(int argc, char **argv)
+{
+    std::ofstream fs("data.csv");
+    fs<<"nbSalle,gen,spread,graph,findNeibors,mst,corridor"<<std::endl;
+    bool toCSV = true;
+    ostream& os(fs);
+    for(int i = 0; i < 20; i++){
+        std::vector<std::vector<bool>> arr;
+        Graph<Room> graph;
+        Floor f2;
+        fs<<100 + (i * 10)<<",";
+        {
+            TimerRAII all("all",std::cout);
+            {
+                TimerRAII gen("gen",os,toCSV);
+                f2 = GenerateFloor(100 + (i * 10), 5, 10, 20);
+            }
+            {
+                TimerRAII spread("spread",os,toCSV);
+                f2.spreadRoom();
+            }
+            {
+                TimerRAII graphT("graph",os,toCSV);
+                graph = { f2.rooms };
+            }
+
+            {
+                TimerRAII findN("findNeigbors",os,toCSV);
+                graph.findNeighbors();
+            }
+            
+            {
+                TimerRAII timer("mst",os,toCSV);
+                graph.mst();
+            }
+            {
+                TimerRAII corridor("corridor",os,toCSV);
+                arr = graph.generateCorridors(f2);
+            }
+        }
+        fs<<std::endl;
+    }
+    fs.close();
+    /*
+    for (auto row : arr)
+    {
+        for (auto col : row)
+            cout << (col ? "\u2588" : " ");
+        cout << std::endl;
+    }
+    */
+    return 0;
+}
+
+int mainTest(int argc, char **argv)
 {
 	Room r1, r2, r3;
 	r1.height = 2;
@@ -54,8 +111,10 @@ int main(int argc, char **argv)
 	cout << "Graph generated :" << endl << graph << endl;
 
 	cout << endl << "computing minimum spanning tree" << endl;
-	graph.mst();
-
+    {
+        TimerRAII timer("mst",std::cout);
+        graph.mst();
+    }
 	cout << "MST generated :" << endl << graph << endl;
 
 	cout << endl << "generating corridors" << endl;
@@ -97,6 +156,8 @@ Floor GenerateFloor(int nbCells, int minSize, int maxSize, int posRadius)
 	}
 	return Floor{ rooms };
 }
+
+
 
 double NormalizedRandom(default_random_engine& generator, normal_distribution<double>& distribution)
 {
