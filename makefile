@@ -44,3 +44,7 @@ debug: all
 .PHONY: release
 release: CFLAGS += -O2
 release: all
+
+.PHONY: extreme
+extreme: CFLAGS += -O3
+extreme: all
