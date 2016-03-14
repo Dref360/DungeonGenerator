@@ -15,6 +15,7 @@ public:
     std::vector<std::vector<bool>> toArray();
     void toOutput(std::ostream&);
     void spreadRoom();
+    int spreadRoom(bool x);
 	int MinX();
 	int MaxX();
 	int MinY();

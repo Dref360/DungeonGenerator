@@ -9,17 +9,30 @@
 #include <fstream>
 
 using namespace std;
+
 Floor GenerateFloor(int, int, int, int);
 double NormalizedRandom(default_random_engine&, normal_distribution<double>&);
 
+int mainNbSalle(int argc, char **argv)
+{
+    std::ofstream fs("dataSpread.csv");
+    fs<<"nbSalle,spread"<<std::endl;
+    for(int i = 0; i < 40; i++){
+        std::vector<std::vector<bool>> arr;
+        Graph<Room> graph;
+        Floor f2;
+        f2 = GenerateFloor(100 + (i * 10), 5, 10, 20);
+        fs<<100 + (i * 10)<<","<<f2.spreadRoom(true)<<std::endl;
+    }
+}
 
-int main(int argc, char **argv)
+int mainTime(int argc, char **argv)
 {
     std::ofstream fs("data.csv");
     fs<<"nbSalle,gen,spread,graph,findNeibors,mst,corridor"<<std::endl;
     bool toCSV = true;
     ostream& os(fs);
-    for(int i = 0; i < 20; i++){
+    for(int i = 0; i < 40; i++){
         std::vector<std::vector<bool>> arr;
         Graph<Room> graph;
         Floor f2;
@@ -43,7 +56,7 @@ int main(int argc, char **argv)
                 TimerRAII findN("findNeigbors",os,toCSV);
                 graph.findNeighbors();
             }
-            
+
             {
                 TimerRAII timer("mst",os,toCSV);
                 graph.mst();
@@ -67,7 +80,7 @@ int main(int argc, char **argv)
     return 0;
 }
 
-int mainTest(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	Room r1, r2, r3;
 	r1.height = 2;

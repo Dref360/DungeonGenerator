@@ -49,6 +49,24 @@ void Floor::spreadRoom()
 	} while (hasChanged);
 }
 
+int Floor::spreadRoom(bool x)
+{
+    int count = 0;
+	bool hasChanged;
+	do
+	{
+		hasChanged = false;
+		for (Room& room : rooms)
+		{
+			auto p = room.GetSteeringNewPosition(rooms);
+			hasChanged |= (p != room.position);
+			room.position = p;
+		}
+        count++;
+	} while (hasChanged);
+    return count;
+}
+
 std::vector<std::vector<bool>> Floor::toArray()
 {
 	std::vector<std::vector<bool>> arr(abs(MinX()) + MaxX(), std::vector<bool>(abs(MinY()) + MaxY(), 0));
