@@ -10,8 +10,42 @@
 
 using namespace std;
 
-Floor GenerateFloor(int, int, int, int);
-double NormalizedRandom(default_random_engine&, normal_distribution<double>&);
+/*
+ * nbCells : number of desired rooms
+ * minSize : minimum size for a room (width and height)
+ * maxSize : maximum size for a room (width and height)
+ * spread  : caracterizing spacing between rooms (e.g. 0.5)
+ */
+Floor GenerateFloor(const unsigned int nbCells, const unsigned int minSize, const unsigned int maxSize, const float spread)
+{
+	vector<Room> rooms;
+	rooms.reserve(nbCells);
+
+	srand(time(0)); // the seeding could be changed in case there is a heavy load in a short period of time
+					// here if 2 requests happen within the same second, results will be identical
+
+	unsigned int n = 1;
+	while (n <= nbCells)
+	{
+		const float r = n*spread;
+		float rad_step = maxSize / r;
+		
+		if (2*M_PI/rad_step > nbCells-n)
+			rad_step = 2*M_PI/(nbCells-n);
+
+		for(float rad=0; rad<2*M_PI; rad+=rad_step)
+		{
+			rooms.emplace_back(
+					max(rand()%maxSize,minSize),
+					max(rand()%maxSize,minSize),
+					cos(rad)*r,
+					sin(rad)*r);
+			++n;
+		}
+	}
+
+	return Floor{rooms};
+}
 
 int mainNbSalle(int argc, char **argv)
 {
@@ -21,7 +55,7 @@ int mainNbSalle(int argc, char **argv)
         std::vector<std::vector<bool>> arr;
         Graph<Room> graph;
         Floor f2;
-        f2 = GenerateFloor(100 + (i * 10), 5, 10, 20);
+        f2 = GenerateFloor(100 + (i * 10), 5, 10, 0.5);
         fs<<100 + (i * 10)<<","<<f2.spreadRoom(true)<<std::endl;
     }
 }
@@ -41,7 +75,7 @@ int mainTime(int argc, char **argv)
             TimerRAII all("all",std::cout);
             {
                 TimerRAII gen("gen",os,toCSV);
-                f2 = GenerateFloor(100 + (i * 10), 5, 10, 20);
+                f2 = GenerateFloor(100 + (i * 10), 5, 10, 0.5);
             }
             {
                 TimerRAII spread("spread",os,toCSV);
@@ -82,6 +116,7 @@ int mainTime(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
+//	exit(mainTime(argc,argv));
 	Room r1, r2, r3;
 	r1.height = 2;
 	r1.width = 2;
@@ -108,7 +143,7 @@ int main(int argc, char **argv)
 	f1.toOutput(cout);
 
 	cout << endl << endl << "Floor generation..." << endl;
-	Floor f2 = GenerateFloor(30, 5, 10, 20);
+	Floor f2 = GenerateFloor(50, 5, 10, 0.5);
 	f2.toOutput(cout);
 
 	f2.spreadRoom();
@@ -148,34 +183,3 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-Floor GenerateFloor(int nbCells, int minSize, int maxSize, int posRadius)
-{
-	random_device rd;
-	default_random_engine generator(rd());
-	normal_distribution<double> distribution(5.0, 2.0);
-	vector<Room> rooms;
-	for (int i = 0; i < nbCells; i++)
-	{
-		int width = max((int)round(NormalizedRandom(generator, distribution) * maxSize), minSize);
-		int height = max((int)round(NormalizedRandom(generator, distribution) * maxSize), minSize);
-
-		double t = NormalizedRandom(generator, distribution) * 2 * 3.14159265358979323846;
-		double r = posRadius * sqrt(NormalizedRandom(generator, distribution));
-
-		int x = round(r * cos(t)) + posRadius;
-		int y = round(r * sin(t)) + posRadius;
-
-		rooms.push_back(Room{ width, height, x, y });
-	}
-	return Floor{ rooms };
-}
-
-
-
-double NormalizedRandom(default_random_engine& generator, normal_distribution<double>& distribution)
-{
-	double x = distribution(generator);
-	while (x > 1 || x < 0)
-		x = distribution(generator);
-	return x;
-}
