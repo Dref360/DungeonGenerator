@@ -33,15 +33,12 @@ Floor GenerateFloor(const unsigned int nbCells, const unsigned int minSize, cons
 		if (2*M_PI/rad_step > nbCells-n)
 			rad_step = 2*M_PI/(nbCells-n);
 
-		for(float rad=0; rad<2*M_PI; rad+=rad_step)
-		{
+		for(float rad=0; rad<2*M_PI; rad+=rad_step, ++n)
 			rooms.emplace_back(
 					max(rand()%maxSize,minSize),
 					max(rand()%maxSize,minSize),
-					cos(rad)*r,
+					cos(rad)*r*(1.f/rand()),
 					sin(rad)*r);
-			++n;
-		}
 	}
 
 	return Floor{rooms};
@@ -116,7 +113,7 @@ int mainTime(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-//	exit(mainTime(argc,argv));
+	exit(mainTime(argc,argv));
 	Room r1, r2, r3;
 	r1.height = 2;
 	r1.width = 2;
@@ -143,7 +140,7 @@ int main(int argc, char **argv)
 	f1.toOutput(cout);
 
 	cout << endl << endl << "Floor generation..." << endl;
-	Floor f2 = GenerateFloor(50, 5, 10, 0.5);
+	Floor f2 = GenerateFloor(300, 5, 10, 0.5);
 	f2.toOutput(cout);
 
 	f2.spreadRoom();
