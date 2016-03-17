@@ -37,7 +37,7 @@ Floor GenerateFloor(const unsigned int nbCells, const unsigned int minSize, cons
 			rooms.emplace_back(
 					max(rand()%maxSize,minSize),
 					max(rand()%maxSize,minSize),
-					cos(rad)*r*(1.f/rand()),
+					cos(rad)*r/rand(),
 					sin(rad)*r);
 	}
 
