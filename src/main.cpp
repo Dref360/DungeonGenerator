@@ -14,7 +14,7 @@ using namespace std;
  * nbCells : number of desired rooms
  * minSize : minimum size for a room (width and height)
  * maxSize : maximum size for a room (width and height)
- * spread  : caracterizing spacing between rooms (e.g. 0.5)
+ * spread  : caracterizing spacing between rooms 
  */
 Floor GenerateFloor(const unsigned int nbCells, const unsigned int minSize, const unsigned int maxSize, const float spread)
 {
@@ -25,10 +25,14 @@ Floor GenerateFloor(const unsigned int nbCells, const unsigned int minSize, cons
 					// here if 2 requests happen within the same second, results will be identical
 
 	unsigned int n = 1;
+
+	float r = 1,
+		  rad_step;
+
 	while (n <= nbCells)
 	{
-		const float r = n*spread;
-		float rad_step = maxSize / r;
+		r += spread;
+		rad_step = maxSize / r;
 		
 		if (2*M_PI/rad_step > nbCells-n)
 			rad_step = 2*M_PI/(nbCells-n);
@@ -37,7 +41,7 @@ Floor GenerateFloor(const unsigned int nbCells, const unsigned int minSize, cons
 			rooms.emplace_back(
 					max(rand()%maxSize,minSize),
 					max(rand()%maxSize,minSize),
-					cos(rad)*r/rand(),
+					cos(rad)*r,
 					sin(rad)*r);
 	}
 
@@ -52,7 +56,7 @@ int mainNbSalle(int argc, char **argv)
         std::vector<std::vector<bool>> arr;
         Graph<Room> graph;
         Floor f2;
-        f2 = GenerateFloor(100 + (i * 10), 5, 10, 0.5);
+        f2 = GenerateFloor(100 + (i * 10), 5, 10, 10);
         fs<<100 + (i * 10)<<","<<f2.spreadRoom(true)<<std::endl;
     }
 }
@@ -72,7 +76,7 @@ int mainTime(int argc, char **argv)
             TimerRAII all("all",std::cout);
             {
                 TimerRAII gen("gen",os,toCSV);
-                f2 = GenerateFloor(100 + (i * 10), 5, 10, 0.5);
+                f2 = GenerateFloor(100 + (i * 10), 5, 10, 10);
             }
             {
                 TimerRAII spread("spread",os,toCSV);
@@ -113,7 +117,7 @@ int mainTime(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-	exit(mainTime(argc,argv));
+//	exit(mainTime(argc,argv));
 	Room r1, r2, r3;
 	r1.height = 2;
 	r1.width = 2;
@@ -140,7 +144,7 @@ int main(int argc, char **argv)
 	f1.toOutput(cout);
 
 	cout << endl << endl << "Floor generation..." << endl;
-	Floor f2 = GenerateFloor(300, 5, 10, 0.5);
+	Floor f2 = GenerateFloor(300, 5, 10, 5);
 	f2.toOutput(cout);
 
 	f2.spreadRoom();
