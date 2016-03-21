@@ -47,8 +47,8 @@ std::vector<std::vector<bool>> Graph<Room>::generateCorridors(Floor& floor) cons
 {
 	auto arr = floor.toArray();
 
-	int minX = abs(floor.MinX());
-	int minY = abs(floor.MinY());
+	int minX = floor.MinX();
+	int minY = floor.MinY();
 
 	for (const auto & node : nodes)
 	{
@@ -61,27 +61,27 @@ std::vector<std::vector<bool>> Graph<Room>::generateCorridors(Floor& floor) cons
 				  next_x = next.middle().x,
 				  next_y = next.middle().y,
 
-				  dx = room_x + minX + room.distanceX(next),
-				  dy = room_y + minY + room.distanceY(next);
+				  dx = room_x - minX + room.distanceX(next),
+				  dy = room_y - minY + room.distanceY(next);
 
-		int x = room_x + minX,
-		    y = room_y + minY;
+		int x = room_x - minX,
+		    y = room_y - minY;
 
 		//Horizontal part of corridor
 		if (room_x < next_x)
 			for (; x < dx; ++x)
-				arr[x][y] = true;
+				arr[y][x] = true;
 		else
 			for (; x > dx; --x)
-				arr[x][y] = true;
+				arr[y][x] = true;
 
 		//Vertical part of corridor
 		if (room_y < next_y)
 			for (; y < dy; ++y)
-				arr[x][y] = true;
+				arr[y][x] = true;
 		else
 			for (; y > dy; --y)
-				arr[x][y] = true;
+				arr[y][x] = true;
 	}
 
 	return arr;

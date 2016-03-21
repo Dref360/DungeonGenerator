@@ -12,14 +12,15 @@ public:
     Floor(std::vector<Room> rooms);
     ~Floor();
     std::vector<Room> rooms;
-    std::vector<std::vector<bool>> toArray();
+    std::vector<std::vector<bool>> toArray() ;
     void toOutput(std::ostream&);
     void spreadRoom();
     int spreadRoom(bool x);
-	int MinX();
-	int MaxX();
-	int MinY();
-	int MaxY();
-private:
+	int MinX() const noexcept;
+	int MinY() const noexcept;
 
+private:
+	int minX, maxX, minY, maxY;
+
+	void calculateBorders();
 };

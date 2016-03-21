@@ -64,7 +64,7 @@ int mainNbSalle(int argc, char **argv)
 int mainTime(int argc, char **argv)
 {
     std::ofstream fs("data.csv");
-    fs<<"nbSalle,gen,spread,graph,findNeibors,mst,corridor"<<std::endl;
+    fs<<"nbSalle,gen,spread,graph,findNeibors,mst,toArray,corridor"<<std::endl;
     bool toCSV = true;
     ostream& os(fs);
     for(int i = 0; i < 40; i++){
