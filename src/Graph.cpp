@@ -43,38 +43,47 @@ void Graph<Room>::findNeighbors()
 }
 
 template<>
-std::vector<std::vector<bool>> Graph<Room>::generateCorridors(Floor& floor)
+std::vector<std::vector<bool>> Graph<Room>::generateCorridors(Floor& floor) const
 {
 	auto arr = floor.toArray();
-	for (Graph<Room>::Node room : Graph<Room>::nodes)
+
+	int minX = abs(floor.MinX());
+	int minY = abs(floor.MinY());
+
+	for (const auto & node : nodes)
 	{
-		for (Graph<Room>::Node* neighbour : room.neighbors)
-		{
-			int minX = abs(floor.MinX());
-			int minY = abs(floor.MinY());
-			int x = room.content->distanceX(*neighbour->content);
-			int y = room.content->distanceY(*neighbour->content);
+		const Room & room = *node.content,
+				   & next = *(*node.neighbors.begin())->content;
 
-			//Horizontal part of corridor
-			int i = 0;
-			if (room.content->middle().x < neighbour->content->middle().x)
-				for (; i < x; i++)
-					arr[minX + room.content->middle().x + i][minY + room.content->middle().y] = true;
-			else
-				for (; i > (-1)*x; i--)
-					arr[minX + room.content->middle().x + i][minY + room.content->middle().y] = true;
+		const int room_x = room.middle().x,
+				  room_y = room.middle().y,
 
+				  next_x = next.middle().x,
+				  next_y = next.middle().y,
 
-			//Vertical part of corridor
-			if (room.content->middle().y < neighbour->content->middle().y)
-				for (int j = 0; j < y; j++)
-					arr[minX + room.content->middle().x + i][minY + room.content->middle().y + j] = true;
-			else
-				for (int j = 0; j > (-1)*y; j--)
-					arr[minX + room.content->middle().x + i][minY + room.content->middle().y + j] = true;
+				  dx = room_x + minX + room.distanceX(next),
+				  dy = room_y + minY + room.distanceY(next);
 
-		}
+		int x = room_x + minX,
+		    y = room_y + minY;
+
+		//Horizontal part of corridor
+		if (room_x < next_x)
+			for (; x < dx; ++x)
+				arr[x][y] = true;
+		else
+			for (; x > dx; --x)
+				arr[x][y] = true;
+
+		//Vertical part of corridor
+		if (room_y < next_y)
+			for (; y < dy; ++y)
+				arr[x][y] = true;
+		else
+			for (; y > dy; --y)
+				arr[x][y] = true;
 	}
+
 	return arr;
 }
 

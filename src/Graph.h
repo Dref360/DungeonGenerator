@@ -49,7 +49,7 @@ public:
 
 	void mst();
 	
-	std::vector<std::vector<bool>> generateCorridors(Floor& floor);
+	std::vector<std::vector<bool>> generateCorridors(Floor& floor) const;
 
 	friend std::ostream& operator<<(std::ostream& os, const Graph& graph)
 	{

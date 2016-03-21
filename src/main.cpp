@@ -117,7 +117,7 @@ int mainTime(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-//	exit(mainTime(argc,argv));
+	exit(mainTime(argc,argv));
 	Room r1, r2, r3;
 	r1.height = 2;
 	r1.width = 2;
