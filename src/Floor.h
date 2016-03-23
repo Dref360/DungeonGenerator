@@ -17,7 +17,9 @@ public:
     void spreadRoom();
     int spreadRoom(bool x);
 	int MinX() const noexcept;
+	int MaxX() const noexcept;
 	int MinY() const noexcept;
+	int MaxY() const noexcept;
 
 private:
 	int minX, maxX, minY, maxY;

@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <iterator>
 #include <functional>
+#include <iostream>
 
 template<class T>
 Graph<T>::Graph(std::vector<T> & contents)
@@ -16,9 +17,7 @@ Graph<T>::Graph(std::vector<T> & contents)
 
 template<class T>
 Graph<T>::Graph()
-{
-    
-}
+{ }
 
 //This will find every neighbors around every node. O(n²)
 template<>
@@ -43,17 +42,19 @@ void Graph<Room>::findNeighbors()
 }
 
 template<>
-std::vector<std::vector<bool>> Graph<Room>::generateCorridors(Floor& floor) const
+std::vector<std::vector<bool>> Graph<Room>::generateCorridors(Floor &floor) const
 {
 	auto arr = floor.toArray();
 
-	int minX = floor.MinX();
-	int minY = floor.MinY();
+	int minX = floor.MinX(),
+		maxX = floor.MaxX(),
+		minY = floor.MinY(),
+		maxY = floor.MaxY();
 
 	for (const auto & node : nodes)
 	{
 		const Room & room = *node.content,
-				   & next = *(*node.neighbors.begin())->content;
+				   & next = *node.neighbors[0]->content;
 
 		const int room_x = room.middle().x,
 				  room_y = room.middle().y,
@@ -61,11 +62,12 @@ std::vector<std::vector<bool>> Graph<Room>::generateCorridors(Floor& floor) cons
 				  next_x = next.middle().x,
 				  next_y = next.middle().y,
 
-				  dx = room_x - minX + room.distanceX(next),
-				  dy = room_y - minY + room.distanceY(next);
+				  dx = next_x - minX,
+				  dy = maxY - next_y;
+
 
 		int x = room_x - minX,
-		    y = room_y - minY;
+		    y = maxY - room_y;
 
 		//Horizontal part of corridor
 		if (room_x < next_x)
@@ -77,10 +79,10 @@ std::vector<std::vector<bool>> Graph<Room>::generateCorridors(Floor& floor) cons
 
 		//Vertical part of corridor
 		if (room_y < next_y)
-			for (; y < dy; ++y)
+			for (; y > dy; --y)
 				arr[y][x] = true;
 		else
-			for (; y > dy; --y)
+			for (; y < dy; ++y)
 				arr[y][x] = true;
 	}
 
@@ -119,7 +121,6 @@ void Graph<T>::mst()
 	DSF(&nodes.front());
 
 	// Assign new neighbors, 0 is the starting point so no neighbor for this node
-	nodes[0].neighbors.clear();
 	for(size_t i=1; i<nodes.size(); ++i)
 	{
 		nodes[i].neighbors.clear();

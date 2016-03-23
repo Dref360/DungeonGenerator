@@ -65,7 +65,7 @@ Point Room::middle() const
 {
 	Point middle;
 	middle.x = position.x + (width / 2);
-	middle.y = position.y + (height / 2);
+	middle.y = position.y - (height / 2);
 	return middle;
 }
 

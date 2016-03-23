@@ -9,16 +9,14 @@ Floor::Floor()
 
 Floor::Floor(std::vector<Room> rooms)
 	:rooms{ rooms },
-	 minX{std::numeric_limits<int>::max()},
-	 maxX{std::numeric_limits<int>::min()},
-	 minY{std::numeric_limits<int>::max()},
-	 maxY{std::numeric_limits<int>::min()}
-{
-}
+	 minX{ },
+	 maxX{ },
+	 minY{ },
+	 maxY{ }
+{}
 
 Floor::~Floor()
-{
-}
+{}
 
 void Floor::toOutput(std::ostream& os)
 {
@@ -51,8 +49,6 @@ void Floor::spreadRoom()
 		}
 
 	} while (hasChanged);
-
-	calculateBorders();
 }
 
 int Floor::spreadRoom(bool x)
@@ -71,56 +67,45 @@ int Floor::spreadRoom(bool x)
         count++;
 	} while (hasChanged);
 	
-	calculateBorders();
-
     return count;
 }
 
 std::vector<std::vector<bool>> Floor::toArray()
 {
 	calculateBorders();
-	std::vector<std::vector<bool>> arr(maxY-minY, std::vector<bool>(maxX-minX, false));
-	for (const Room & room : rooms)
+	std::vector<std::vector<bool>>
+		arr( (maxY-minY), std::vector<bool>( (maxX-minX), false ) );
+	for (const auto & room : rooms)
 		for (unsigned int j = 0; j < room.height; ++j)
 			for (unsigned int i = 0; i < room.width; ++i)
-			{
-				std::cout << "minY = " << minY << std::endl;
-				std::cout << "maxY = " << maxY << std::endl;
-				std::cout << "minX = " << minX << std::endl;
-				std::cout << "maxX = " << maxX << std::endl;
-				std::cout << "height = " << room.height << std::endl;
-				std::cout << "width = " << room.width << std::endl;
-				std::cout << "max y = " << maxY-minY << " max x = " << maxX-minX << std::endl;
-				std::cout << "room position : x = " << room.position.x << " y = " << room.position.y << std::endl;
-				std::cout << "i = " << i << " j = " << j << std::endl;
-				std::cout << "y[" << maxY - room.position.y + j << "] x[" << room.position.x + i - minX << "]" << std::endl;
-				std::cout << arr[maxY - room.position.y + j].size() << std::endl;
-				arr[maxY - room.position.y + j][room.position.x + i - minX] = true;
-			}
+				arr[maxY - room.position.y + j][room.position.x + i - minX]
+					= true;
 	return arr;
 }
 
 int Floor::MinX() const noexcept
 { return minX; }
 
+int Floor::MaxX() const noexcept
+{ return maxX; }
+
 int Floor::MinY() const noexcept
 { return minY; }
+
+int Floor::MaxY() const noexcept
+{ return maxY; }
 
 void Floor::calculateBorders()
 {
 	for (const auto & room : rooms)
 	{
-		minX = (room.position.x < minX 
-					? room.position.x 
-					: minX);
-		maxX = (room.position.x + room.width > maxX 
-					? room.position.x + room.width 
-					: maxX);
-		minY = (room.position.y - room.height < minY
-					? room.position.y - room.height 
-					: minY);
-		maxY = (room.position.y > maxY 
-					? room.position.y 
-					: maxY);
+		if(room.position.x < minX)
+			minX = room.position.x;
+		if(room.position.x + room.width > maxX)
+			maxX = room.position.x + room.width;
+		if(room.position.y - room.height < minY)
+			minY = room.position.y - room.height;
+		if(room.position.y > maxY)
+			maxY = room.position.y;
 	}
 }
