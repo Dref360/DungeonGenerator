@@ -43,9 +43,7 @@ void Floor::spreadRoom()
 		hasChanged = false;
 		for (Room& room : rooms)
 		{
-			auto p = room.GetSteeringNewPosition(rooms);
-			hasChanged |= (p != room.position);
-			room.position = p;
+			hasChanged |= room.GetSteeringNewPosition(rooms);
 		}
 
 	} while (hasChanged);
@@ -60,13 +58,11 @@ int Floor::spreadRoom(bool x)
 		hasChanged = false;
 		for (Room& room : rooms)
 		{
-			auto p = room.GetSteeringNewPosition(rooms);
-			hasChanged |= (p != room.position);
-			room.position = p;
+			hasChanged |= room.GetSteeringNewPosition(rooms);
 		}
         count++;
 	} while (hasChanged);
-	
+
     return count;
 }
 

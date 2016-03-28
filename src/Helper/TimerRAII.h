@@ -9,12 +9,12 @@ private:
     std::ostream &os;
     std::string task;
     bool toCSV;
-    
+
 public:
     TimerRAII(std::string task,std::ostream& os,bool toCSV = false)
     : os{os},task{task},toCSV{toCSV},avant{std::chrono::high_resolution_clock::now()}
     {
-        
+
     }
     ~TimerRAII()
     {
@@ -28,6 +28,10 @@ public:
               << std::chrono::duration_cast<std::chrono::microseconds>(apres-avant).count()
               << " us." << std::endl;
         }
-        
+
+    }
+    int diffNow(){
+      auto apres = std::chrono::high_resolution_clock::now();
+      return std::chrono::duration_cast<std::chrono::microseconds>(apres-avant).count();
     }
 };

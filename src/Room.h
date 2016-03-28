@@ -13,7 +13,7 @@ class Point {
     Point(int x, int y)
         :x{ x }, y{ y }
     {}
-    
+
     Point()
         :x{ 0 }, y{ 0 }
     {}
@@ -41,7 +41,7 @@ class Point {
     }
 
 	bool operator==(const Point& other) const
-	{ 
+	{
 		return x == other.x
 			&& y == other.y;
 	}
@@ -61,7 +61,7 @@ public:
     int width;
     int height;
     Point position;
-    Point GetSteeringNewPosition(std::vector<Room>& neighbours);
+    bool GetSteeringNewPosition(std::vector<Room>& neighbours);
     Point middle() const;
     bool intersect(const Room&) const;
     float distance(const Room&) const;
@@ -69,8 +69,8 @@ public:
 	int distanceY(const Room&) const;
 
 	bool operator==(const Room& other) const
-	{ 
-		return position == other.position 
+	{
+		return position == other.position
 			&& height   == other.height
 			&& width    == other.width;
 	}

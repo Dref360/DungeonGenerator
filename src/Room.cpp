@@ -10,11 +10,11 @@ std::ostream& operator<<(std::ostream& os, const Point& pt)
 }
 
 Room::Room()
-	: width{ 0 }, height{ 0 }, position{ Point() } 
+	: width{ 0 }, height{ 0 }, position{ Point() }
 {}
 
 Room::Room(int w, int h, int x, int y)
-	: width{ w }, height{ h }, position{ Point(x, y) } 
+	: width{ w }, height{ h }, position{ Point(x, y) }
 {}
 
 
@@ -35,18 +35,14 @@ Point move(const Room& room1, const Room& room2)
 
 }
 
-Point Room::GetSteeringNewPosition(std::vector<Room>& neighbours)
+bool Room::GetSteeringNewPosition(std::vector<Room>& neighbours)
 {
-	Point vectorino;
-	vectorino.x = 0;
-	vectorino.y = 0;
-	auto vectorSteering = std::accumulate(begin(neighbours), end(neighbours), vectorino, [&](const Point& acc, Room& x)
+	auto prev = position;
+	std::for_each(begin(neighbours), end(neighbours), [&](const Room& x)
 	{
-		//std::cout<<position << " avec " << x.position << " Intersect : " << (intersect(x) ? "True" : "False") << " Same : " << (&x != this) << std::endl;
-		return intersect(x) && (&x != this) ? acc + move(x, *this) : acc;
+		this->position = intersect(x) && (&x != this) ? position + move(x, *this) * -1 : position;
 	});
-	//std::cout << vectorSteering.x << ".." << vectorSteering.y << std::endl;
-	return position + vectorSteering * -1;
+	return prev != position;
 }
 
 
@@ -91,4 +87,3 @@ std::ostream& operator<<(std::ostream& os, const Room& room)
 	os << '(' << room.position.x << ',' << room.position.y << ')' << '[' << room.width << ',' << room.height << ']';
 	return os;
 }
-
