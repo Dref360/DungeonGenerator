@@ -2,11 +2,13 @@
 #include "Graph.h"
 #include "Room.h"
 #include "Helper/TimerRAII.h"
+#include "Helper/Report.h"
 
 #include <iostream>
 #include <vector>
 #include <random>
 #include <fstream>
+#include <map>
 
 using namespace std;
 
@@ -14,7 +16,7 @@ using namespace std;
  * nbCells : number of desired rooms
  * minSize : minimum size for a room (width and height)
  * maxSize : maximum size for a room (width and height)
- * spread  : caracterizing spacing between rooms 
+ * spread  : caracterizing spacing between rooms
  */
 Floor GenerateFloor(const unsigned int nbCells, const unsigned int minSize, const unsigned int maxSize, const float spread)
 {
@@ -33,7 +35,7 @@ Floor GenerateFloor(const unsigned int nbCells, const unsigned int minSize, cons
 	{
 		r += spread;
 		rad_step = maxSize / r;
-		
+
 		if (2*M_PI/rad_step > nbCells-n)
 			rad_step = 2*M_PI/(nbCells-n);
 
@@ -50,17 +52,20 @@ Floor GenerateFloor(const unsigned int nbCells, const unsigned int minSize, cons
 
 int mainTime(int argc, char **argv)
 {
+		map<int,vector<int>> time;
     std::ofstream fs("data.csv");
     fs<<"nbSalle,gen,spread,graph,findNeibors,mst,corridor"<<std::endl;
     bool toCSV = true;
     ostream& os(fs);
+		for (size_t x = 0; x < 10; x++) {
     for(int i = 0; i < 40; i++){
         std::vector<std::vector<bool>> arr;
         Graph<Room> graph;
         Floor f2;
+				int nbSalle = 100 + (i * 10);
         fs<<100 + (i * 10)<<",";
         {
-            TimerRAII all("all",std::cout);
+            //TimerRAII all("all",std::cout);
             {
                 TimerRAII gen("gen",os,toCSV);
                 f2 = GenerateFloor(100 + (i * 10), 5, 10, 10);
@@ -68,6 +73,8 @@ int mainTime(int argc, char **argv)
             {
                 TimerRAII spread("spread",os,toCSV);
                 f2.spreadRoom();
+								auto t = spread.diffNow();
+								time[nbSalle].push_back(t);
             }
             {
                 TimerRAII graphT("graph",os,toCSV);
@@ -90,7 +97,19 @@ int mainTime(int argc, char **argv)
         }
         fs<<std::endl;
     }
+	}
+
+	fs << endl;
+	fs << "nbSalle,means,std,min,max"<<endl;
+	for(int i = 0; i < 40; i++){
+			int nbSalle = 100 + (i * 10);
+			fs<<nbSalle <<",";
+			Report rp(time[nbSalle]);
+			rp.print(fs,true);
+	}
+
     fs.close();
+
 
     return 0;
 }
@@ -113,4 +132,3 @@ int main(int argc, char **argv)
 	}
 	return 0;
 }
-
