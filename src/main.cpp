@@ -10,6 +10,10 @@
 #include <fstream>
 #include <map>
 
+#define debugStream \
+    if (true) {} \
+    else std::cerr
+
 using namespace std;
 
 /*
@@ -49,16 +53,17 @@ Floor GenerateFloor(const unsigned int nbCells, const unsigned int minSize, cons
 
 	return Floor{rooms};
 }
-
-int mainTime(int argc, char **argv)
+/*This test the spread algoreithm*/
+int mainTour(int argc, char **argv)
 {
 		map<int,vector<int>> time;
+		const int NbSalleInput = 60;
     std::ofstream fs("data.csv");
     fs<<"nbSalle,gen,spread,graph,findNeibors,mst,corridor"<<std::endl;
     bool toCSV = true;
     ostream& os(fs);
-		for (size_t x = 0; x < 10; x++) {
-    for(int i = 0; i < 40; i++){
+		for (size_t x = 0; x < 60; x++) {
+    for(int i = 0; i < NbSalleInput; i++){
         std::vector<std::vector<bool>> arr;
         Graph<Room> graph;
         Floor f2;
@@ -67,14 +72,80 @@ int mainTime(int argc, char **argv)
         {
             //TimerRAII all("all",std::cout);
             {
+                //TimerRAII gen("gen",os,toCSV);
+                f2 = GenerateFloor(100 + (i * 10), 5, 10, 10);
+            }
+            {
+                //TimerRAII spread("spread",os,toCSV);
+                auto x = f2.spreadRoom(true);
+                time[nbSalle].push_back(x);
+
+            }
+            {
+                //TimerRAII graphT("graph",os,toCSV);
+                graph = { f2.rooms };
+            }
+
+            {
+                //TimerRAII findN("findNeigbors",os,toCSV);
+                graph.findNeighbors();
+            }
+
+            {
+                //TimerRAII timer("mst",os,toCSV);
+                graph.mst();
+            }
+            {
+                //TimerRAII corridor("corridor",os,toCSV);
+                arr = graph.generateCorridors(f2);
+            }
+
+        }
+        fs<<std::endl;
+    }
+	}
+
+	fs << endl;
+	cout<<"Printing Report" << endl;
+	fs << "nbSalle,means,std,min,max"<<endl;
+	for(int i = 0; i < NbSalleInput; i++){
+			int nbSalle = 100 + (i * 10);
+			fs<<nbSalle <<",";
+			Report rp(time[nbSalle]);
+			rp.print(fs,true);
+	}
+
+    fs.close();
+
+
+    return 0;
+}
+/*This is an example to test the speed of our programm*/
+int mainTime(int argc, char **argv)
+{
+		map<int,vector<int>> time;
+		const int NbSalleInput = 60;
+    std::ofstream fs("datatime.csv");
+    fs<<"nbSalle,gen,spread,graph,findNeibors,mst,corridor"<<std::endl;
+    bool toCSV = true;
+    ostream& os(fs);
+		for (size_t x = 0; x < 60; x++) {
+    for(int i = 0; i < NbSalleInput; i++){
+        std::vector<std::vector<bool>> arr;
+        Graph<Room> graph;
+        Floor f2;
+				int nbSalle = 100 + (i * 10);
+        fs<<100 + (i * 10)<<",";
+        {
+            TimerRAII all("all",std::cout);
+            {
                 TimerRAII gen("gen",os,toCSV);
                 f2 = GenerateFloor(100 + (i * 10), 5, 10, 10);
             }
             {
                 TimerRAII spread("spread",os,toCSV);
                 f2.spreadRoom();
-								auto t = spread.diffNow();
-								time[nbSalle].push_back(t);
+
             }
             {
                 TimerRAII graphT("graph",os,toCSV);
@@ -100,8 +171,9 @@ int mainTime(int argc, char **argv)
 	}
 
 	fs << endl;
+	cout<<"Printing Report" << endl;
 	fs << "nbSalle,means,std,min,max"<<endl;
-	for(int i = 0; i < 40; i++){
+	for(int i = 0; i < NbSalleInput; i++){
 			int nbSalle = 100 + (i * 10);
 			fs<<nbSalle <<",";
 			Report rp(time[nbSalle]);
@@ -116,8 +188,14 @@ int mainTime(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-	exit(mainTime(argc,argv));
-	Floor floor = GenerateFloor(300, 5, 10, 5);
+  cout << argc;
+  if(argc < 2)
+  {
+    std::cout << "Need the number of room!" << endl;
+    exit(0);
+  }
+  cout << argv[1];
+	Floor floor = GenerateFloor(atoi(argv[1]), 5, 10, 5);
 	floor.spreadRoom();
 	Graph<Room> graph = { floor.rooms };
 	graph.findNeighbors();
